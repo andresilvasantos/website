@@ -1,0 +1,23 @@
+<textarea.text-area class=input.class placeholder=input.placeholder />
+
+style.less {
+    .text-area {
+        background-color: @color-white;
+        border: 0.05rem solid @color-mineshaft;
+        font-size: 20px;
+        outline: 0;
+        padding: 15px;
+        .remove-appearance();
+        .text-truncate();
+        .placeholder-color(fade(@color-black, 40));
+        .transition(background-color 0.2s ease-out);
+
+        &:focus {
+            background-color: @color-white;
+        }
+
+        &.invalid {
+            border: 0.05em solid @color-wrong;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+<h4.text-h4 class=input.class>
+    <include(data.renderBody)/>
+</h4>
+
+style.less {
+    .text-h4 {
+        font-family: @font;
+        font-size: 45px;
+        font-weight: 600;
+
+        .responsive-max(@break-md, {
+            font-size: 35px;
+        });
+
+        .responsive-max(@break-sm, {
+            font-size: 25px;
+        });
+    }
+};

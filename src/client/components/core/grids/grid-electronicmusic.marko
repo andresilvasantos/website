@@ -1,0 +1,68 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    remove(track) {
+        deleteContent('electronicmusic', track, this)
+    }
+}
+
+<div.grid-electronicmusic class=input.class>
+    <frame-soundcloud
+        for(track in state.content)
+        removable
+        trackAliasId=track.soundcloudAlias
+        trackArtwork=track.imageUrl
+        trackId=track.soundcloudId
+        trackTitle=track.title
+        on-remove('remove', track)
+    />
+</div>
+
+style.less {
+    .grid-electronicmusic {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-md, {
+            grid-template-columns: repeat(1, 1fr);
+        });
+
+        .frame-soundcloud {
+            padding-top: 24%;
+
+            .responsive-max(@break-xl, {
+                padding-top: 40%;
+            });
+
+            .responsive-max(@break-md, {
+                padding-top: 20%;
+            });
+
+            .responsive-max(@break-ms, {
+                padding-top: 30%;
+            });
+        }
+    }
+};

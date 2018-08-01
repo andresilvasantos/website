@@ -1,0 +1,179 @@
+import axios from 'axios'
+import copy from 'src/client/copy.json'
+
+$ const adminAddCopy = copy.admin.add
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser,
+            category: input.category,
+            content: input.content,
+            csrf: out.global.csrfToken,
+            showAdd: false
+        }
+    }
+
+    showAddSection() {
+        this.state.showAdd = true
+    }
+
+    submitContent() {
+        const addFormComponent = this.getComponent('addForm')
+
+        if(!addFormComponent.validContent()) return
+
+        var that = this
+        axios.post('/' + this.state.category, {
+            content: addFormComponent.content(),
+            _csrf: this.state.csrf
+        })
+        .then(function (response) {
+            if(!response.data.code) {
+                if(!that.state.content) {
+                    that.state.content = []
+                }
+
+                if(Array.isArray(response.data.content)) {
+                    that.state.content = that.state.content.concat(response.data.content)
+                }
+                else {
+                    that.state.content.push(response.data.content)
+                }
+                that.setStateDirty('content')
+                that.state.showAdd = false
+            }
+            else {
+                console.log(response.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+}
+
+<div.section-grid class=input.class data-dark='true'>
+    <!--
+        The include tag would be the ideal scenario to load templates dynamically
+        https://github.com/marko-js/marko/issues/768
+    -->
+    <if(state.category == 'shortfilms')>
+        <grid-shortfilms content=state.content />
+    </if>
+    <else-if(state.category == 'photography')>
+        <grid-photography content=state.content />
+    </else-if>
+    <else-if(state.category == 'electronicmusic')>
+        <grid-electronicmusic content=state.content />
+    </else-if>
+    <else-if(state.category == 'codeprojects')>
+        <grid-codeprojects content=state.content />
+    </else-if>
+    <else-if(state.category == 'movies')>
+        <grid-movies content=state.content />
+    </else-if>
+    <else-if(state.category == 'tvshows')>
+        <grid-tvshows content=state.content />
+    </else-if>
+    <else-if(state.category == 'music')>
+        <grid-music content=state.content />
+    </else-if>
+    <else-if(state.category == 'videogames')>
+        <grid-videogames content=state.content />
+    </else-if>
+
+    <if(state.admin && state.showAdd)>
+        <div.section-add>
+            <!--
+                The include tag would be the ideal scenario to load templates dynamically
+                https://github.com/marko-js/marko/issues/768
+            -->
+            <if(state.category == 'shortfilms')>
+                <form-shortfilms.form key='addForm' />
+            </if>
+            <else-if(state.category == 'photography')>
+                <form-photography.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'electronicmusic')>
+                <form-electronicmusic.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'codeprojects')>
+                <form-codeprojects.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'movies')>
+                <form-movies.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'tvshows')>
+                <form-tvshows.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'music')>
+                <form-music.form key='addForm' />
+            </else-if>
+            <else-if(state.category == 'videogames')>
+                <form-videogames.form key='addForm' />
+            </else-if>
+            <button-text.button-submit
+                text=adminAddCopy.submitContent
+                on-click('submitContent')
+            />
+        </div>
+    </if>
+
+    <if(state.admin && !state.showAdd)>
+        <div.wrapper-button-add>
+            <button-default.button-add on-click('showAddSection')>
+                <text-p>
+                    ${adminAddCopy.openForm}
+                </text-p>
+            </button-default>
+        </div>
+    </if>
+</div>
+
+style.less {
+    .section-grid {
+        background-color: @color-codgray;
+        .section-padding();
+
+        .section-add {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+            width: 100%;
+
+            .form {
+                width: 100%;
+            }
+
+            .button-submit {
+                margin-top: 20px;
+
+                .text {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .wrapper-button-add {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+
+            .button-add {
+                background-color: @color-white;
+                display: flex;
+                font-weight: 600;
+                justify-content: center;
+                min-width: 100px;
+                padding: 10px 15px;
+                text-transform: uppercase;
+
+                .text-p {
+                    letter-spacing: 0;
+                }
+            }
+        }
+    }
+};

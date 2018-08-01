@@ -1,0 +1,224 @@
+import { calculateSidebarButtonMode, convertToHtmlText } from "src/client/utils"
+import copy from 'src/client/copy.json';
+
+$ const copyCodeProjects = copy.categories.codeProjects
+
+class {
+    onCreate(input) {
+        this.state = {
+            content: input.content
+        }
+
+        const description = convertToHtmlText(this.state.content.description)
+        this.state.content.description = description
+    }
+
+    onMount() {
+        const sectionKeys = ['header', 'description', 'images']
+        const sectionElements = []
+
+        sectionKeys.map(key => {
+            const element = this.getEl(key)
+            if(element) {
+                sectionElements.push(this.getEl(key))
+            }
+        })
+        calculateSidebarButtonMode(sectionElements);
+
+        this.popup = this.getComponent('popup')
+    }
+
+    open(index) {
+        if(event.button > 1) {
+            return
+        }
+
+        event.preventDefault()
+
+        const sliderComponent = this.getComponent('slider')
+
+        sliderComponent.setImages(this.state.content.images)
+        sliderComponent.setCurrentIndex(index)
+        sliderComponent.show()
+    }
+}
+
+$ const thumbnail = `/static/uploads/${state.content.thumbnail}_x1.jpg`
+
+<div>
+    <div.section.header key='header'
+        data-dark='true'
+        style={backgroundColor: state.content.mainColor}
+    >
+        <text-h2.title>
+            ${state.content.name}
+        </text-h2>
+        <text-h5.short-description>
+            ${state.content.shortDescription}
+        </text-h5>
+
+        <div.wrapper-frame>
+            <if(state.content.youtubeId)>
+                <frame-youtube
+                    videoId=state.content.youtubeId
+                    videoThumbnail=thumbnail
+                />
+            </if>
+            <else>
+                <div.frame>
+                    <image src=thumbnail />
+                </div>
+            </else>
+        </div>
+    </div>
+
+    <if(state.content.description)>
+        <div.section.section-description key='description'>
+            <text-p.description>
+                $!{state.content.description}
+                <br><br><br>
+                <a.project-url
+                    href=state.content.url
+                    style={backgroundColor: state.content.mainColor}
+                    target='_blank'
+                >
+                    ${copyCodeProjects.projectPage}
+                </a>
+            </text-p>
+        </div>
+    </if>
+
+    <if(state.content.images.length)>
+        <div.section.section-images
+            data-dark='true'
+            key='images'
+            style={backgroundColor: state.content.mainColor}
+        >
+            <div.wrapper-images-grid>
+                <thumbnail-hardzoom.thumbnail
+                    for(let i = 0; i < state.content.images.length; ++i)
+                    imageUrl=`/static/uploads/${state.content.images[i]}_x2.jpg`
+                    on-open('open', i)
+                />
+            </div>
+        </div>
+        <slider-image key='slider' />
+    </if>
+</div>
+
+style.less {
+    @main-width-large: 75%;
+    @main-width-small: 100%;
+
+    .section {
+        width: 100%;
+        .section-padding();
+    }
+
+    .header {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+        top: 0;
+
+        .title {
+            color: @color-white;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .short-description {
+            color: fade(@color-white, 50);
+            text-align: center;
+        }
+
+        .wrapper-frame {
+            margin-top: 40px;
+            position: relative;
+            width: @main-width-large;
+
+            .responsive-max(@break-ms, {
+                width: @main-width-small;
+            });
+
+            .frame-youtube {
+                padding-top: 56.25%;
+
+                .button-play {
+                    .square(8vw);
+
+                    .responsive-max(@break-xs, {
+                        .square(12vw);
+                    });
+                }
+            }
+
+            .frame {
+                padding-top: 56.25%;
+                position: relative;
+                width: 100%;
+
+                .image {
+                    object-fit: cover;
+                    .absolute-fill();
+                    .square(100%);
+                }
+            }
+        }
+    }
+
+    .section-description {
+        background-color: @color-white;
+        position: relative;
+
+        .description {
+            margin: auto;
+            width: @main-width-large;
+
+            .responsive-max(@break-xs, {
+                padding: 25px 0;
+            });
+
+            .responsive-max(@break-ms, {
+                width: @main-width-small;
+            });
+
+            .project-url {
+                color: @color-white;
+                font-weight: 600;
+                margin-top: 20px;
+                padding: 10px;
+                .transition(opacity 0.2s ease-out);
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    .section-images {
+        width: 100%;
+        .section-padding();
+
+        .wrapper-images-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin: auto;
+            position: relative;
+            width: @main-width-large;
+            .grid-spacing();
+
+            .responsive-max(@break-ms, {
+                grid-template-columns: repeat(2, 1fr);
+                width: @main-width-small;
+            });
+
+            .thumbnail {
+                padding-top: 70%;
+            }
+        }
+    }
+};

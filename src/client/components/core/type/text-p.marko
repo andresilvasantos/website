@@ -1,0 +1,20 @@
+<p.text-p class=input.class>
+    <include(data.renderBody)/>
+</p>
+
+style.less {
+    .text-p {
+        font-family: @font;
+        font-size: 15px;
+        letter-spacing: 0.1em;
+        line-height: 1.4;
+
+        .responsive-max(@break-md, {
+            font-size: 12px;
+        });
+
+        .responsive-max(@break-xs, {
+            font-size: 10px;
+        });
+    }
+};

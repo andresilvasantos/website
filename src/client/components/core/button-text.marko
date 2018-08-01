@@ -1,0 +1,40 @@
+<if(input.link)>
+    <a.button-text
+        class=input.class
+        href=input.href
+        style={pointerEvents: 'auto'}
+    >
+        <text-h5.text>
+            ${input.text}
+        </text-h5>
+    </a>
+</if>
+<else>
+    <button-default.button-text class=input.class on-click('emit', 'click')>
+        <text-h5.text>
+            ${input.text}
+        </text-h5>
+    </button-default>
+</else>
+
+style.less {
+    .button-text {
+        align-items: center;
+        background-color: @color-white;
+        border: solid 2px @color-mineshaft;
+        color: @color-mineshaft;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        text-transform: uppercase;
+        .transition(background-color 0.2s ease-out);
+
+        .text {
+            padding: 0.7em 2em;
+        }
+
+        &:hover {
+            background-color: @color-gallery;
+        }
+    }
+};

@@ -1,0 +1,25 @@
+class {
+    onMount() {
+        this.mediaDrop = this.getComponent('mediaDrop')
+    }
+
+    content() {
+        const media = this.mediaDrop.media()
+        const imagesData = []
+
+        for(let i = 0; i < media.length; ++i) {
+            const file = media[i]
+            imagesData.push(file.upload.uuid)
+        }
+
+        return imagesData
+    }
+
+    validContent() {
+        return this.mediaDrop.mediaCount() > 0
+    }
+}
+
+<div.form-photography class=input.class>
+    <media-drop key='mediaDrop' />
+</div>

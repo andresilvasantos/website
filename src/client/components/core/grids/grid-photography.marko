@@ -1,0 +1,74 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    open(index) {
+        if(event.button > 1) {
+            return
+        }
+
+        event.preventDefault()
+
+        const sliderComponent = this.getComponent('slider')
+        const imagesArray = []
+
+        for(var i = 0; i < this.state.content.length; ++i) {
+            imagesArray.push(this.state.content[i].imageId)
+        }
+
+        sliderComponent.setImages(imagesArray)
+        sliderComponent.setCurrentIndex(index)
+        sliderComponent.show()
+    }
+
+    remove(photograph) {
+        deleteContent('photography', photograph, this)
+    }
+}
+
+<div.grid-photography class=input.class>
+    <thumbnail-hardzoom.thumbnail
+        for(let i = 0; i < state.content.length; ++i)
+        imageUrl=`/static/uploads/${state.content[i].imageId}_x2.jpg`
+        removable
+        on-open('open', i)
+        on-remove('remove', state.content[i])
+    />
+    <slider-image key='slider' />
+</div>
+
+style.less {
+    .grid-photography {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 70%;
+        }
+    }
+};

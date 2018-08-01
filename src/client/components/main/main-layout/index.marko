@@ -1,0 +1,114 @@
+import copy from 'src/client/copy.json';
+
+static const title = copy.metadata.title
+static const description = copy.metadata.description
+static const pageUrl = 'http://andresilvasantos.com'
+
+$ const fullTitle = (
+    out.global.pageTitle ? `${out.global.pageTitle} | ${title}` : title
+)
+
+<lasso-page package-path='../../../../../browser.json' />
+
+<!doctype html>
+<html>
+<head>
+    <lasso-resource
+        path='src/client/assets/images/og-image.jpg'
+        var='ogImage'
+    />
+
+    <!-- Meta data -->
+
+    <title>${fullTitle}</title>
+    <meta name='description' content=description />
+
+    <meta name='twitter:card' value='summary' />
+    <meta name='twitter:title' content=fullTitle />
+    <meta name='twitter:description' content=description />
+    <meta name='twitter:creator' content='@andre_santos_pt' />
+    <meta name='twitter:image' content=`${pageUrl}${ogImage.url}` />
+
+    <meta property='og:title' content=fullTitle />
+    <meta property='og:site_name' content=fullTitle />
+    <meta property='og:type' content='website' />
+    <meta property='og:url' content=pageUrl />
+    <meta
+        content=`${pageUrl}${ogImage.url}`
+        property='og:image'
+    />
+    <meta property='og:description' content=description />
+
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+
+    <!-- Fonts -->
+
+    <link
+        href='https://fonts.googleapis.com/css?family=Raleway:400,500,600,800'
+        rel='stylesheet'
+    >
+
+    <!-- Favicon -->
+
+    <link
+        href='src/client/assets/images/favicon/apple-touch-icon.png'
+        rel='apple-touch-icon'
+        sizes='180x180'
+    >
+    <link
+        href='src/client/assets/images/favicon/favicon-32x32.png'
+        rel='icon'
+        sizes='32x32'
+        type='image/png'
+    >
+    <link
+        href='src/client/assets/images/favicon/favicon-16x16.png'
+        rel='icon'
+        sizes='16x16'
+        type='image/png'
+    >
+    <link
+        href='src/client/assets/images/favicon/site.webmanifest'
+        rel='manifest'
+    >
+    <link
+        color='#111111'
+        href='src/client/assets/images/favicon/safari-pinned-tab.svg'
+        rel='mask-icon'
+    >
+    <meta name='msapplication-TileColor' content='#111111'>
+    <meta name='theme-color' content='#ffffff'>
+
+    <!-- Scripts -->
+
+    <if (out.global.loggedUser)>
+        <script
+            src='https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js'
+        />
+        <script
+            async=''
+            src='https://cdn.jsdelivr.net/npm/dropzone@5.5.1/dist/dropzone.min.js'
+        />
+    </if>
+    <lasso-head />
+</head>
+<body class=data.class>
+    <${input.body} />
+    <main-footer />
+    <main-sidebar buttonColor=input.mainColor />
+
+    <script>
+        window.lazySizesConfig = window.lazySizesConfig || {}
+        window.lazySizesConfig.loadMode = 1
+        window.lazySizesConfig.loadHidden = false
+        //lazySizesConfig.loadMode = 1;
+        //lazySizesConfig.expand = 10;
+    </script>
+    <script
+        async=''
+        src='https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.4/lazysizes.min.js'
+    />
+    <browser-refresh />
+    <lasso-body />
+</body>
+</html>

@@ -1,0 +1,37 @@
+class {
+    onMount() {
+        this.blindElement = this.getEl("root")
+
+        const debounce = (cb) => () => window.requestAnimationFrame(cb);
+        const handleScroll = debounce(() => {
+            this.calculateBlindness()
+        });
+
+        window.addEventListener('scroll', handleScroll)
+        this.calculateBlindness()
+    }
+
+    calculateBlindness() {
+        let headerBlind = window.pageYOffset / this.blindElement.clientHeight
+
+        if(headerBlind > 1) headerBlind = 1
+        else if(headerBlind < 0) headerBlind = 0
+
+        this.blindElement.style.opacity = headerBlind
+    }
+}
+
+<div.blind key="root" class=([input.class, input.darkMode ? 'dark' : ''])/>
+
+style.less {
+    .blind {
+        background-color: @color-white;
+        opacity: 0;
+        pointer-events: none;
+        .absolute-fill();
+
+        &.dark {
+            background-color: @color-codgray;
+        }
+    }
+};

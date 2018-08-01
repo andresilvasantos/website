@@ -1,0 +1,141 @@
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser,
+            showFrame: false
+        }
+    }
+
+    revealFrame() {
+        this.state.showFrame = true
+    }
+}
+
+<div.frame-soundcloud class=input.class>
+    <div.placeholder />
+
+    <if(state.showFrame)>
+        <iframe scrolling="no" frameborder="no" allow="autoplay"
+            src=`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${input.trackId}&
+            color=%23ff5500&auto_play=true&hide_related=true&show_comments=true&show_user=true&
+            show_reposts=false&show_teaser=false&visual=true`>
+        </iframe>
+    </if>
+    <else>
+        <button-default.wrapper-frame on-click('revealFrame')>
+            <image src=input.trackArtwork />
+
+            <div.button-play>
+                <rawhtml>
+                    <include-html("src/client/assets/images/play-button.svg") />
+                </rawhtml>
+            </div>
+
+            <div.wrapper-title>
+                <div.title>
+                    <a
+                        href=`https://soundcloud.com/ein/${input.trackAliasId}`
+                        target='_blank'
+                    >
+                        ${input.trackTitle}
+                    </a>
+                </div>
+            </div>
+        </button-default>
+    </else>
+
+    <if(state.admin && input.removable)>
+        <button-remove on-click('emit', 'remove')/>
+    </if>
+</div>
+
+style.less {
+    .frame-soundcloud {
+        position: relative;
+        width: 100%;
+
+        .placeholder {
+            background-color: @color-gallery;
+            position: absolute;
+            .absolute-fill();
+            .square(100%);
+        }
+
+        iframe {
+            position: absolute;
+            .absolute-fill();
+            .square(100%);
+        }
+
+        .wrapper-frame {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            .absolute-fill();
+
+            .image {
+                object-fit: cover;
+                .absolute-fill();
+                .square(100%);
+            }
+
+            .button-play {
+                align-items: center;
+                background-color: fade(@color-soundcloud, 80);
+                border-radius: 50%;
+                color: @color-white;
+                display: flex;
+                justify-content: center;
+                position: relative;
+                .drop-shadow();
+                .square(70px);
+                .transition(color 0.2s ease-out, background-color 0.2s ease-out, transform .2s ease-out;);
+
+                .responsive-max(@break-xs, {
+                    .square(55px);
+                });
+
+                & > span {
+                    transform: translate(3px, 1px) scale(0.4);
+                }
+            }
+
+            &:hover > .button-play {
+                background-color: fade(@color-white, 80);
+                color: @color-mineshaft;
+                .scale(1.1);
+            }
+
+            .wrapper-title {
+                pointer-events: none;
+                position: relative;
+                width: 65%;
+
+                .title {
+                    display: inline-flex;
+                    margin-left: 15px;
+                    pointer-events: none;
+                    width: 100%;
+
+                    a {
+                        background-color: fade(@color-mineshaft, 50);
+                        color: @color-white;
+                        display: block;
+                        font-weight: 600;
+                        margin: 10px;
+                        padding: 5px 10px;
+                        pointer-events: auto;
+                        .text-truncate();
+                        .transition(color 0.2s ease-out);
+                    }
+
+                    &:hover {
+                        a {
+                            color: fade(@color-white, 60);
+                        }
+                    }
+                }
+            }
+        }
+    }
+};

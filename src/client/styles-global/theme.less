@@ -1,0 +1,94 @@
+/**
+ * Colors.
+ */
+
+@color-anakiwa: #a1c4fd;
+@color-black: black;
+@color-charlotte: #c2e9fb;
+@color-codgray: #111111;
+@color-gallery: #efefef;
+@color-mineshaft: #333333;
+@color-silver: #cccccc;
+@color-soundcloud: #ff5500;
+@color-white: white;
+@color-wrong: #ed4360;
+
+/**
+ * Gradients.
+ */
+
+@gradient-softblue: linear-gradient(120deg, @color-anakiwa 0%, @color-charlotte 100%);
+
+/**
+ * Typography.
+ */
+
+@font: Raleway, SF UI Text, Helvetica Neue, Arial Nova, Segoe UI, Arial, sans-serif;
+
+/**
+ * Breakpoints.
+ */
+
+@break-lg: 1200px;
+@break-md: 992px;
+@break-ms: 768px;
+@break-sm: 576px;
+@break-xl: 1440px;
+@break-xs: 480px;
+@break-xxs: 320px;
+
+/**
+ * Custom style properties.
+ */
+
+.section-padding() {
+    padding: 20px;
+
+    .responsive-min(@break-xs, {
+        padding: 40px;
+    });
+
+    .responsive-min(@break-md, {
+        padding: 50px 80px;
+    });
+
+    .responsive-min(@break-lg, {
+        padding: 60px 100px;
+    });
+}
+
+.subsection-margin() {
+    margin-bottom: 40px;
+
+    .responsive-min(@break-sm, {
+        margin-bottom: 50px;
+    });
+
+    .responsive-min(@break-md, {
+        margin-bottom: 80px;
+    });
+
+    .responsive-min(@break-lg, {
+        margin-bottom: 100px;
+    });
+}
+
+.sidebar-padding() {
+    padding: 30px;
+
+    .responsive-max(@break-lg, {
+        padding: 22px;
+    });
+
+    .responsive-max(@break-md, {
+        padding: 35px;
+    });
+
+    .responsive-max(@break-xs, {
+        padding: 15px;
+    });
+}
+
+.grid-spacing() {
+    grid-gap: 5px;
+}

@@ -1,0 +1,91 @@
+import copy from 'src/client/copy.json';
+
+$ const formsCopy = copy.admin.add.shortFilms
+
+class {
+    onMount() {
+        this.idElement = this.getComponent("inputId").getEl()
+        this.titleElement = this.getComponent("inputTitle").getEl()
+        this.genresElement = this.getComponent("inputGenres").getEl()
+        this.colorElement = this.getComponent("inputMainColor").getEl()
+        this.descriptionElement = this.getComponent("inputDescription").getEl()
+        this.mediaDrop = this.getComponent('mediaDrop')
+    }
+
+    content() {
+        let contentData = {}
+
+        const genresString = this.genresElement.value
+        const genresArray = genresString.replace(/ /g, '').split(',')
+
+        contentData['youtubeId'] = this.idElement.value
+        contentData['title'] = this.titleElement.value
+        contentData['genres'] = genresArray
+        contentData['mainColor'] = this.colorElement.value.toLowerCase()
+        contentData['description'] = this.descriptionElement.value
+
+        const media = this.mediaDrop.media()
+        const imagesData = []
+
+        for(let i = 0; i < media.length; ++i) {
+            const file = media[i]
+            imagesData.push(file.upload.uuid)
+        }
+
+        contentData['images'] = imagesData
+
+        return contentData
+    }
+
+    validContent() {
+        return (
+            this.idElement.value.length &&
+            this.titleElement.value.length &&
+            this.genresElement.value.length &&
+            this.colorElement.value.length &&
+            this.descriptionElement.value.length &&
+            this.mediaDrop.mediaCount()
+        )
+    }
+}
+
+<div.form-shortfilms class=input.class>
+    <div.wrapper-inputs>
+        <text-input key='inputId' placeholder=formsCopy.placeholderId />
+        <text-input key='inputTitle' placeholder=formsCopy.placeholderTitle />
+        <text-input key='inputGenres' placeholder=formsCopy.placeholderGenres />
+        <text-input
+            key='inputMainColor'
+            placeholder=formsCopy.placeholderColor
+        />
+        <text-area
+            key='inputDescription'
+            placeholder=formsCopy.placeholderDescription
+        />
+    </div>
+    <media-drop key='mediaDrop' />
+</div>
+
+style.less {
+    .form-shortfilms {
+        .wrapper-inputs {
+            display: grid;
+            grid-row-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+
+            .responsive-max(@break-ms, {
+                grid-template-columns: repeat(2, 1fr);
+            });
+
+            .text-input {
+                height: 55px;
+            }
+
+            .text-area {
+                grid-column: span 4;
+                height: 200px;
+                margin-bottom: 20px;
+            }
+        }
+    }
+};

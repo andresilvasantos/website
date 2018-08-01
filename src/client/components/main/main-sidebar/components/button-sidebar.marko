@@ -1,0 +1,118 @@
+class {
+    onCreate() {
+        this.state = {
+            darkMode: false
+        }
+    }
+
+    setDarkMode(darkMode) {
+        this.state.darkMode = darkMode
+    }
+}
+
+<div.button-sidebar class=([input.class, state.darkMode ? 'dark' : ''])>
+    <button-default on-click('emit', 'click')>
+        <div.bars-background
+            style=(input.color && !state.darkMode ?
+                {backgroundColor: input.color} : {})
+        />
+        <div.wrapper-bars>
+            <span.bar for(i from 0 to 2)
+                style=(input.color && state.darkMode && !input.opened ?
+                    {backgroundColor: input.color} : {})
+            />
+        </div>
+    </button-default>
+</div>
+
+style.less {
+    .button-sidebar {
+        @button-width: 30px;
+        @button-height: 20px;
+
+        .button-default {
+            .sidebar-padding();
+            .square(100%);
+
+            .bars-background {
+                background-color: @color-codgray;
+                left: 50%;
+                opacity: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                .size(@button-width, @button-height);
+                .transition(
+                    background-color .2s ease-out,
+                    opacity .2s ease-out;
+                );
+
+                .responsive-max(@break-md, {
+                    opacity: 1;
+                });
+            }
+
+            .wrapper-bars {
+                position: relative;
+                .size(@button-width, @button-height);
+
+                .bar {
+                    background-color: @color-white;
+                    height: 20%;
+                    left: 0;
+                    opacity: 1;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    .rotate(0deg);
+                    .transition(color .2s ease-out, transform .2s ease-out;);
+
+                    &:nth-child(2) {
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+
+                    &:nth-child(3) {
+                        top: 100%;
+                        transform: translateY(-100%);
+                    }
+                }
+            }
+        }
+    }
+
+    &.dark {
+        .button-default > .bars-background {
+            background-color: @color-white;
+        }
+
+        .button-default > .wrapper-bars > .bar { // stylelint-disable-line no-descending-specificity
+            background-color: @color-codgray;
+        }
+    }
+
+    .opened > .button-sidebar > .button-default {
+        .bars-background {
+            opacity: 0;
+        }
+
+        .wrapper-bars > .bar {
+            background-color: @color-codgray;
+
+            &:nth-child(1) {
+                top: 50%;
+                transform: translateY(-50%) rotate(45deg);
+            }
+
+            &:nth-child(2) {
+                opacity: 0;
+            }
+
+            &:nth-child(3) {
+                top: 50%;
+                transform: translateY(-50%) rotate(-45deg);
+            }
+        }
+    }
+};

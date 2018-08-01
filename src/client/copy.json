@@ -1,0 +1,193 @@
+{
+    "admin": {
+        "add": {
+            "codeProjects": {
+                "placeholderColor": "Main color (hex)",
+                "placeholderDescription": "Project description",
+                "placeholderName": "Project name",
+                "placeholderShortDescription": "Project short description",
+                "placeholderUrl": "Project URL",
+                "placeholderVideoId": "Youtube ID"
+            },
+            "electronicMusic": {
+                "placeholderAlias": "Track SoundCloud alias ID",
+                "placeholderId": "Track SoundCloud ID",
+                "placeholderImageUrl": "Track artwork URL",
+                "placeholderTitle": "Track title"
+            },
+            "movies": {
+                "placeholderId": "Movie IMDB ID",
+                "placeholderImageUrl": "Movie poster URL",
+                "placeholderTitle": "Movie title",
+                "placeholderVote": "Your rating"
+            },
+            "music": {
+                "placeholderId": "Youtube ID",
+                "placeholderTitle": "Music title"
+            },
+            "photography": {
+            },
+            "shortFilms": {
+                "placeholderColor": "Main color (hex)",
+                "placeholderDescription": "Short film description",
+                "placeholderGenres": "Genres separated by commas",
+                "placeholderId": "Youtube ID",
+                "placeholderTitle": "Short film title"
+            },
+            "tvShows": {
+                "placeholderId": "TV show IMDB ID",
+                "placeholderImageUrl": "TV show poster URL",
+                "placeholderTitle": "TV show title",
+                "placeholderVote": "Your rating"
+            },
+            "videoGames": {
+                "placeholderImageUrl": "Video game poster URL",
+                "placeholderTitle": "Video game title",
+                "placeholderUrl": "Video game URL"
+            },
+            "openForm": "Add",
+            "submitContent": "Submit"
+        },
+        "changeBackgroundImage": "Change background image",
+        "login": {
+            "button": "Login",
+            "placeholderPassword": "Password",
+            "placeholderUsername": "Username",
+            "title": "Admin"
+        },
+        "logout": "Logout"
+    },
+    "categories": {
+        "codeProjects": {
+            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
+            "title": "Code Projects",
+            "watermark": "I do",
+            "projectPage": "Project Page"
+        },
+        "electronicMusic": {
+            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
+            "title": "Electronic Music",
+            "watermark": "I do"
+        },
+        "movies": {
+            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
+            "title": "Movies",
+            "watermark": "I like"
+        },
+        "music": {
+            "intro": "Bla bla bla.",
+            "title": "Music",
+            "watermark": "I like"
+        },
+        "photography": {
+            "intro": "Had strictly <b>mrs handsome</b> mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
+            "title": "Photography",
+            "watermark": "I do"
+        },
+        "shortFilms": {
+            "intro": "Since I was a kid I have this dream of becoming a film director.<br>This are just very short films that I do without any budget to exercise my skills.",
+            "title": "Short Films",
+            "watermark": "I do"
+        },
+        "tvShows": {
+            "intro": "Bla bla bla.",
+            "title": "TV Shows",
+            "watermark": "I like"
+        },
+        "videoGames": {
+            "intro": "Bla bla bla.",
+            "title": "Video Games",
+            "watermark": "I like"
+        }
+    },
+    "error": {
+        "buttonHome": "Home",
+        "text": "Something went wrong."
+    },
+    "mediaDrop": {
+        "dropMessage": "Drop images here",
+        "clickMessage": "Or click to browse local files"
+    },
+    "footer": {
+        "copyright": {
+            "name": "André",
+            "lastNames": "SilvaSantos"
+        }
+    },
+    "home": {
+        "header": {
+            "name": "André<br>Silva Santos",
+            "intro": "The place for the things I do and some of the things I like.",
+            "words": "Code. Color. Cinema. Music. Challenge. Creativity. Dogs. Crypto. Photography. Blue. 420. Painting. MegaRoads. Ideas. Difficult Games. The One Pixel. Countrylife. Piano. Thoughts."
+        },
+        "creations": {
+            "codeProjects": "Code Projects",
+            "electronicMusic": "Electronic Music",
+            "photography": "Photography",
+            "shortFilms": "Short Films",
+            "title": "Things I do"
+        },
+        "likes": {
+            "movies": "Movies",
+            "music": "Music",
+            "title": "Things I like",
+            "tvShows": "TV Shows",
+            "videoGames": "Video Games"
+        }
+    },
+    "metadata": {
+        "description": "I'm André Silva Santos and this is the place where I share the things I do and some of the things I like.",
+        "title": "André Silva Santos"
+    },
+    "sidebar": {
+        "creations": {
+            "codeProjects": "Code Projects",
+            "electronicMusic": "Electronic Music",
+            "photography": "Photography",
+            "shortFilms": "Short Films",
+            "title": "I do"
+        },
+        "home": "Home",
+        "likes": {
+            "movies": "Movies",
+            "music": "Music",
+            "title": "I like",
+            "tvShows": "TV Shows",
+            "videoGames": "Video Games"
+        },
+        "quotes": [{
+            "quote": "Without music, life would be a mistake.",
+            "author": "Friedrich Nietzsche"
+        }, {
+            "quote": "You miss 100% of the shots you don’t take.",
+            "author": "Wayne Gretzky"
+        }, {
+            "quote": "Start where you are. Use what you have. Do what you can.",
+            "author": "Arthur Ashe"
+        }, {
+            "quote": "If you’re not failing, you’re not trying hard enough.",
+            "author": "Jillian Michaels"
+        }, {
+            "quote": "It’s not the voters who decides who wins in a democracy, it’s whoever counts the votes.",
+            "author": "Unknown"
+        }]
+    },
+    "void": {
+        "lookingFor": "Are you looking for",
+        "optionNo": "No",
+        "optionYes": "Yes",
+        "randomWords": [
+            "a dinosaur with tiny hands",
+            "gummy bears",
+            "the meaning of life",
+            "the best chocolate cake in the world",
+            "a woman with growing horns",
+            "the two headed woman",
+            "tardigrades",
+            "cute jumping spiders",
+            "cows cows cows",
+            "techno viking",
+            "drunk dimitri"
+        ]
+    }
+}

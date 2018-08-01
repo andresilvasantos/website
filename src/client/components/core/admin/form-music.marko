@@ -1,0 +1,40 @@
+import copy from 'src/client/copy.json';
+
+$ const formsCopy = copy.admin.add.music
+
+class {
+    content() {
+        const idElement = this.getComponent("inputId").getEl()
+        const titleElement = this.getComponent("inputTitle").getEl()
+
+        let contentData = {}
+        contentData['youtubeId'] = idElement.value
+        contentData['title'] = titleElement.value
+
+        return contentData
+    }
+
+    validContent() {
+        return true
+    }
+}
+
+<div.form-music class=input.class>
+    <text-input key='inputId' placeholder=formsCopy.placeholderId />
+    <text-input key='inputTitle' placeholder=formsCopy.placeholderTitle />
+</div>
+
+style.less {
+    .form-music {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .text-input {
+            height: 55px;
+        }
+    }
+};

@@ -1,0 +1,60 @@
+{
+  "name": "website",
+  "version": "0.0.1",
+  "description": "",
+  "main": "website.js",
+  "scripts": {
+    "build": "mkdir -p static && browserify -g markoify --extension='.marko' routes/index/client.js -o static/bundle.js",
+    "build-prod": "mkdir -p static && NODE_ENV=production browserify -g markoify --extension='.marko' routes/index/client.js -o static/bundle.js",
+    "start": "npm run build && node server.js",
+    "watcher": "./node_modules/.bin/browser-refresh website.js",
+    "styleless": "./node_modules/.bin/stylelint **/*.marko --syntax less"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://andresilvasantos@bitbucket.org/andresilvasantos/andresilvasantos_website.git"
+  },
+  "author": "André Santos",
+  "license": "CC-BY-NC-ND-3.0",
+  "homepage": "https://bitbucket.org/andresilvasantos/andresilvasantos_website#readme",
+  "dependencies": {
+    "@lasso/marko-taglib": "^1.0.10",
+    "app-module-path": "^2.2.0",
+    "async": "^2.6.1",
+    "axios": "^0.16.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "case": "^1.5.5",
+    "compression": "^1.7.2",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "csurf": "^1.9.0",
+    "express": "^4.16.3",
+    "express-force-ssl": "^0.3.2",
+    "express-session": "^1.15.6",
+    "imgurify": "^2.0.1",
+    "lasso": "github:andresilvasantos/lasso",
+    "lasso-less": "^3.0.1",
+    "lasso-marko": "^2.4.4",
+    "less": "^3.8.0",
+    "marko": "4.12.3",
+    "marko-loader": "^1.3.3",
+    "mongoose": "^4.13.14",
+    "multer": "^1.3.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "rand-token": "^0.4.0",
+    "random-int-array": "^1.0.0",
+    "sharp": "^0.20.5"
+  },
+  "devDependencies": {
+    "browser-refresh": "^1.7.3",
+    "browser-refresh-taglib": "^1.1.0",
+    "browserify": "^16.2.2",
+    "eslint": "^4.19.1",
+    "stylelint": "^9.4.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-order": "^0.8.1",
+    "stylelint-processor-arbitrary-tags": "^0.1.0"
+  }
+}

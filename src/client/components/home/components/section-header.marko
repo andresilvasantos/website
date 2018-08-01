@@ -1,0 +1,115 @@
+import copy from 'src/client/copy.json';
+
+$ const headerCopy = copy.home.header
+
+class {
+    onMount() {
+        this.initImageParallax()
+    }
+
+    initImageParallax() {
+        this.headerElement = this.getEl('root')
+        this.nameElement = this.getComponent('name').getEl()
+        this.wrapperElement = this.getEl('wrapper')
+
+        const debounce = (cb) => () => window.requestAnimationFrame(cb);
+        const handleScroll = debounce(() => {
+            this.calculateImageParallax()
+        });
+
+        window.addEventListener('scroll', handleScroll)
+        this.calculateImageParallax()
+    }
+
+    calculateImageParallax() {
+        let headerBlind = window.pageYOffset / this.headerElement.clientHeight
+
+        headerBlind = headerBlind > 1 ? 1 : (headerBlind < 0 ? 0 : headerBlind)
+        this.wrapperElement.style.transform = `
+            translateY(-${headerBlind * 50}vh)
+        `
+
+        const nameBackgroundTranslateY = 40 + headerBlind * 50;
+
+        if(window.innerWidth > 992) {
+            this.nameElement.style.backgroundPosition = `
+                40% ${nameBackgroundTranslateY}%
+            `
+        }
+    }
+}
+
+<div.section-header key='root' class=input.class data-dark='true'>
+    <div.wrapper-content key='wrapper'>
+        <text-h1.name key='name'>
+            $!{headerCopy.name}
+        </text-h1>
+        <div.wrapper-intro>
+            <text-p.lead>
+                ${headerCopy.intro}
+            </text-p>
+            <div.wrapper-words>
+                <text-p.words>
+                    ${headerCopy.words}
+                </text-p>
+            </div>
+        </div>
+    </div>
+    <blind darkMode=true />
+</div>
+
+style.less {
+    .section-header {
+        background-color: @color-codgray;
+
+        .wrapper-content {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            .section-padding();
+            .square(100%);
+
+            .responsive-max(@break-md, {
+                align-items: start;
+                text-align: left;
+            });
+
+            .name {
+                background: url('/src/client/assets/images/header-background.jpg') repeat;
+                background-position: 40% 50%;
+                color: fade(@color-white, 20);
+                font-size: 8vw;
+                margin-bottom: 0.3em;
+                padding-top: 0.2em;
+                text-transform: uppercase;
+                -webkit-text-stroke-width: 1px;
+                .background-clip(text);
+
+                .responsive-max(@break-md, {
+                    font-size: 12vw;
+                });
+            }
+
+            .wrapper-intro {
+                color: @color-white;
+                max-width: 550px;
+
+                .lead {
+                    margin-bottom: 20px;
+                    opacity: 0.6;
+                }
+
+                .wrapper-words {
+                    position: relative;
+
+                    .words {
+                        opacity: 0.1;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
+};

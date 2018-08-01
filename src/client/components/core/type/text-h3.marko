@@ -1,0 +1,19 @@
+<h3.text-h3 class=input.class>
+    <include(data.renderBody)/>
+</h3>
+
+style.less {
+    .text-h3 {
+        font-family: @font;
+        font-size: 50px;
+        font-weight: 600;
+
+        .responsive-max(@break-md, {
+            font-size: 40px;
+        });
+
+        .responsive-max(@break-sm, {
+            font-size: 30px;
+        });
+    }
+};

@@ -1,0 +1,31 @@
+<h1.text-h1 class=input.class>
+    <include(data.renderBody)/>
+</h1>
+
+style.less {
+    .text-h1 {
+        font-family: @font;
+        font-size: 120px;
+        font-weight: 800;
+        letter-spacing: -4px;
+        line-height: 0.8;
+
+        .responsive-max(@break-lg, {
+            font-size: 100px;
+        });
+
+        .responsive-max(@break-md, {
+            font-size: 70px;
+        });
+
+        .responsive-max(@break-sm, {
+            font-size: 50px;
+            letter-spacing: -2px;
+        });
+
+        .responsive-max(@break-xs, {
+            font-size: 40px;
+            letter-spacing: -2px;
+        });
+    }
+};

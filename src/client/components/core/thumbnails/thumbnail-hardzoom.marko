@@ -1,0 +1,44 @@
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser
+        }
+    }
+
+    mousedown(event) {
+        if(event.button == 1) {
+            this.emit('open')
+        }
+    }
+}
+
+<div.thumbnail-enlarge class=input.class>
+    <button-default on-click('emit', 'open') on-mousedown('mousedown')>
+        <image src=input.imageUrl />
+    </button-default>
+
+    <if(state.admin && input.removable)>
+        <button-remove on-click('emit', 'remove')/>
+    </if>
+</div>
+
+style.less {
+    .thumbnail-enlarge {
+        overflow: hidden;
+        position: relative;
+
+        .image {
+            object-fit: cover;
+            .absolute-fill();
+            .scale(2);
+            .square(100%);
+            .transition(transform .05s ease-out);
+        }
+
+        &:hover {
+            .image {
+                .scale(1);
+            }
+        }
+    }
+};

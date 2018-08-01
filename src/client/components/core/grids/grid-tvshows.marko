@@ -1,0 +1,60 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    remove(tvShow) {
+        deleteContent('tvshows', tvShow, this)
+    }
+}
+
+<div.grid-tvshows>
+    <thumbnail-link.thumbnail
+        for(tvShow in state.content)
+        imageUrl=tvShow.imageUrl
+        removable
+        subText=`${tvShow.vote} / 10`
+        text=tvShow.title
+        url=`https://www.imdb.com/title/${tvShow.imdbId}`
+        on-remove('remove', tvShow)
+    />
+</div>
+
+style.less {
+    .grid-tvshows {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(3, 1fr);
+        });
+
+        .responsive-max(@break-xs, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 148%;
+        }
+    }
+};

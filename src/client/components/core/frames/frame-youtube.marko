@@ -1,0 +1,131 @@
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser,
+            showFrame: false
+        }
+    }
+
+    revealFrame() {
+        this.state.showFrame = true
+    }
+}
+
+<div.frame-youtube class=input.class>
+    <div.placeholder />
+
+    <if(state.showFrame)>
+        <iframe
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            frameborder="0"
+            src=`https://www.youtube.com/embed/${input.videoId}?rel=0&amp;showinfo=0&autoplay=true`
+        />
+    </if>
+    <else>
+        <button-default.button-frame on-click('revealFrame')>
+            <image
+                src=(input.videoThumbnail ||
+                `http://img.youtube.com/vi/${input.videoId}/hqdefault.jpg`)
+            />
+            <if(input.videoTitle)>
+                <div.gradient-overlay />
+            </if>
+            <div.button-play>
+                <rawhtml>
+                    <include-html("src/client/assets/images/play-button.svg") />
+                </rawhtml>
+            </div>
+        </button-default>
+
+        <if(input.videoTitle)>
+            <a
+                href=`https://youtube.com/watch?v=${input.videoId}`
+                target='_blank'
+            >
+                ${input.videoTitle}
+            </a>
+        </if>
+    </else>
+
+    <if(state.admin && input.removable)>
+        <button-remove on-click('emit', 'remove')/>
+    </if>
+</div>
+
+style.less {
+    .frame-youtube {
+        position: relative;
+        width: 100%;
+
+        .placeholder {
+            background-color: @color-gallery;
+            .absolute-fill();
+            .square(100%);
+        }
+
+        iframe {
+            .absolute-fill();
+            .square(100%);
+        }
+
+        .button-play {
+            align-items: center;
+            background-color: fade(@color-mineshaft, 80);
+            border-radius: 50%;
+            color: @color-white;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            .absolute-center();
+            .drop-shadow();
+            .square(65px);
+            .transition(color 0.2s ease-out, background-color 0.2s ease-out, transform 0.2s ease-out;);
+
+            & > span {
+                transform: translate(3px, 1px) scale(0.35);
+
+                .responsive-max(@break-ms, {
+                    transform: translate(1px, 1px) scale(0.35);
+                });
+            }
+        }
+
+        .button-frame {
+            .image {
+                object-fit: cover;
+                .absolute-fill();
+                .square(100%);
+            }
+
+            .gradient-overlay {
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 25%);
+                .absolute-fill();
+                .square(100%);
+            }
+
+            &:hover > .button-play {
+                background-color: fade(@color-white, 80);
+                color: @color-mineshaft;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        a {
+            color: @color-white;
+            font-size: 17px;
+            font-weight: 600;
+            left: 0;
+            max-width: 90%;
+            padding: 5px 10px;
+            position: absolute;
+            top: 0;
+            .text-truncate();
+            .transition(color 0.2s ease-out);
+
+            &:hover {
+                color: fade(@color-white, 60);
+            }
+        }
+    }
+};

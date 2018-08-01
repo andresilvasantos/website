@@ -1,0 +1,22 @@
+import configVars from "src/client/config-vars"
+
+class {
+    onInput(input) {
+        if(this.mounted) {
+            this.getEl('image').classList.add("lazyload")
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+}
+
+<img.image.lazyload
+    class=input.class
+    data-src=input.src
+    key='image'
+    src=(input.smallSrc || configVars.imagePlaceHolder)
+    style=input.style
+    on-load('emit', 'load')
+/>

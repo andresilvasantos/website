@@ -1,0 +1,211 @@
+import copy from 'src/client/copy.json'
+
+$ const adminCopy = copy.admin
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser,
+            changeBackgroundEnabled: false
+        }
+    }
+
+    onMount() {
+        this.initImageParallax()
+
+        this.imageElement = this.getComponent("imageBackground").getEl()
+
+        // Show background image if it's loaded.
+        if(this.backgroundLoaded) {
+            this.imageElement.style.opacity = 0.2
+        }
+        else {
+            this.mounted = true
+        }
+    }
+
+    backgroundImageLoaded() {
+        this.backgroundLoaded = true
+
+        // Show background image if component is mounted.
+        if(this.mounted) {
+            this.imageElement.style.opacity = 0.2
+        }
+    }
+
+    initImageParallax() {
+        this.headerElement = this.getEl('root')
+        this.wrapperElement = this.getEl('wrapper')
+
+        const debounce = (cb) => () => window.requestAnimationFrame(cb);
+        const handleScroll = debounce(() => {
+            this.calculateImageParallax()
+        });
+
+        window.addEventListener('scroll', handleScroll)
+        this.calculateImageParallax()
+    }
+
+    calculateImageParallax() {
+        let headerBlind = window.pageYOffset / this.headerElement.clientHeight
+        headerBlind = headerBlind > 1 ? 1 : (headerBlind < 0 ? 0 : headerBlind)
+
+        this.wrapperElement.style.transform = `translate(-50%, calc(-50% - ${headerBlind * 50}vh))`
+    }
+
+    changeBackgroundRequested() {
+        this.state.changeBackgroundEnabled = true
+    }
+
+    updateBackgroundImage() {
+        const media = this.getComponent('mediaDrop').media()
+        if(!media.length) return
+
+        const mediaId = media[0].upload.uuid
+
+        this.emit('updateBackgroundImage', mediaId)
+    }
+}
+
+<div.section-header key='root' class=input.class data-dark=(input.dark && 'true')>
+    <image.background
+        key='imageBackground'
+        src=input.imageUrl
+        on-load('backgroundImageLoaded')
+    />
+
+    <if(state.admin)>
+        <div.wrapper-change-background>
+            <if(state.changeBackgroundEnabled)>
+                <media-drop key='mediaDrop' maxMediaCount=1 />
+                <button-text.button-change-background
+                    text=adminCopy.add.submitContent
+                    on-click('updateBackgroundImage')
+                />
+            </if>
+            <else>
+                <button-text.button-change-background
+                    text=adminCopy.changeBackgroundImage
+                    on-click('changeBackgroundRequested')
+                />
+            </else>
+        </div>
+    </if>
+
+    <div.wrapper-content key='wrapper'>
+        <div.test>
+            <text-h2.watermark>
+                ${input.copy.watermark}
+            </text-h2>
+            <text-h1.title key="title">
+                ${input.copy.title}
+            </text-h1>
+            <text-p.intro>
+                $!{input.copy.intro}
+            </text-p>
+        </div>
+    </div>
+
+    <blind />
+</div>
+
+style.less {
+    .section-header {
+        background-color: @color-white;
+        position: relative;
+
+        .background {
+            object-fit: cover;
+            opacity: 0;
+            .absolute-fill();
+            .square(100%);
+            .transition(all 2s ease-out);
+        }
+
+        .wrapper-change-background {
+            bottom: 30px;
+            position: absolute;
+            right: 30px;
+
+            .media-drop {
+                background-color: @color-codgray;
+                margin-bottom: 20px;
+                width: 300px;
+            }
+        }
+
+        .wrapper-content {
+            left: 50%;
+            padding-bottom: 0 !important;
+            padding-top: 0 !important;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            .section-padding();
+
+            .responsive-max(@break-md, {
+                text-align: left;
+            });
+
+            .test {
+                position: relative;
+
+                .watermark {
+                    color: @color-white;
+                    font-size: 12vw;
+                    left: 50%;
+                    line-height: 0.8;
+                    opacity: 0.3;
+                    position: absolute;
+                    text-transform: uppercase;
+                    top: 0;
+                    transform: translate(-50%, -60%);
+                    white-space: nowrap;
+
+                    .responsive-max(@break-md, {
+                        left: 0;
+                        transform: translate(-8px, -60%);
+                    });
+
+                    .responsive-max(@break-ms, {
+                        font-size: 18vw;
+                    });
+                }
+
+                .title {
+                    color: @color-codgray;
+                    position: relative;
+                    text-transform: uppercase;
+                    .transition(background-position .1s ease-out);
+
+                    .responsive-max(@break-md, {
+                        transform: translateX(-5px);
+                    });
+                }
+
+                .intro {
+                    color: @color-codgray;
+                    left: 50%;
+                    opacity: 0.6;
+                    padding-bottom: 0 !important;
+                    padding-top: 0 !important;
+                    position: absolute;
+                    top: 120%;
+                    transform: translateX(-50%);
+                    width: 50vw;
+                    //.section-padding();
+
+                    .responsive-max(@break-xl, {
+                        width: 60vw;
+                    });
+
+                    .responsive-max(@break-md, {
+                        width: 100%;
+                    });
+                }
+            }
+        }
+    }
+};

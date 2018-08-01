@@ -1,0 +1,38 @@
+import { calculateSidebarButtonMode } from "src/client/utils"
+
+class {
+    onMount() {
+        const sectionKeys = ['header', 'creations', 'likes']
+        const sectionElements = []
+
+        sectionKeys.map(key => {
+            sectionElements.push(this.getComponent(key).getEl())
+        })
+        calculateSidebarButtonMode(sectionElements);
+    }
+}
+
+<div>
+    <section-header key='header' />
+    <section-creations key='creations' content=input.content />
+    <section-likes key='likes' content=input.content />
+</div>
+
+style.less {
+    .section-header {
+        height: 100vh;
+        top: 0;
+        width: 100%;
+        .position-sticky();
+
+        .responsive-max(@break-md, {
+            position: relative;
+        });
+    }
+
+    .section-creations,
+    .section-likes {
+        position: relative;
+        width: 100%;
+    }
+};

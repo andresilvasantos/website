@@ -1,0 +1,89 @@
+import { capitalizeFirstLetter, deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+
+        const shortFilms = this.state.content
+        for(let i = 0; i < shortFilms.length; ++i) {
+            const genres = shortFilms[i].genres
+
+            for(let j = 0; j < genres.length; ++j) {
+                genres[j] = capitalizeFirstLetter(genres[j])
+            }
+            shortFilms[i].genres = genres.join(', ')
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    open(shortFilm, event) {
+        if(event.button > 1) {
+            return
+        }
+
+        event.preventDefault()
+        window.open(`/shortfilms/${shortFilm.id}`, event.button == 0 ? '_self' : '_blank')
+    }
+
+    remove(shortFilm) {
+        deleteContent('shortfilms', shortFilm, this)
+    }
+}
+
+<div.grid-shortfilms class=input.class>
+    <thumbnail-namereveal.thumbnail
+        for(shortFilm in state.content)
+        color=shortFilm.mainColor
+        imageUrl=`/static/uploads/${shortFilm.images[0]}_x2.jpg`
+        removable
+        subText=shortFilm.genres
+        subTextOnTop=true
+        text=shortFilm.title
+        on-open('open', shortFilm)
+        on-remove('remove', shortFilm)
+    />
+</div>
+
+style.less {
+    .grid-shortfilms {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(1, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 55%;
+
+            .responsive-max(@break-ms, {
+                padding-top: 40%; //eslint-disable-line selector-max-empty-lines
+
+                .text {
+                    font-size: 6vw;
+                } //eslint-disable-line selector-max-empty-lines
+
+                .sub-text {
+                    font-size: 2.5vw;
+                }
+            });
+        }
+    }
+};

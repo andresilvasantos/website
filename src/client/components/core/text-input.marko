@@ -1,0 +1,28 @@
+<input.text-input
+    class=input.class
+    placeholder=input.placeholder
+    type=(input.type || 'text')
+    on-keyup('emit', 'keyup')
+/>
+
+style.less {
+    .text-input {
+        background-color: @color-white;
+        border: 0.05rem solid @color-mineshaft;
+        font-size: 20px;
+        outline: 0;
+        padding: 5px 15px;
+        .remove-appearance();
+        .text-truncate();
+        .placeholder-color(fade(@color-black, 40));
+        .transition(background-color 0.2s ease-out);
+
+        &:focus {
+            background-color: @color-white;
+        }
+
+        &.invalid {
+            border: 0.05em solid @color-wrong;
+        }
+    }
+}

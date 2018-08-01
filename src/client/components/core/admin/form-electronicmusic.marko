@@ -1,0 +1,46 @@
+import copy from 'src/client/copy.json';
+
+$ const formsCopy = copy.admin.add.electronicMusic
+
+class {
+    content() {
+        const idElement = this.getComponent("inputId").getEl()
+        const aliasElement = this.getComponent("inputAlias").getEl()
+        const titleElement = this.getComponent("inputTitle").getEl()
+        const imageUrlElement = this.getComponent("inputImageUrl").getEl()
+
+        let contentData = {}
+        contentData['soundcloudId'] = idElement.value
+        contentData['soundcloudAlias'] = aliasElement.value
+        contentData['title'] = titleElement.value
+        contentData['imageUrl'] = imageUrlElement.value
+
+        return contentData
+    }
+
+    validContent() {
+        return true
+    }
+}
+
+<div.form-electronicmusic class=input.class>
+    <text-input key='inputId' placeholder=formsCopy.placeholderId />
+    <text-input key='inputAlias' placeholder=formsCopy.placeholderAlias />
+    <text-input key='inputTitle' placeholder=formsCopy.placeholderTitle />
+    <text-input key='inputImageUrl' placeholder=formsCopy.placeholderImageUrl />
+</div>
+
+style.less {
+    .form-electronicmusic {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .text-input {
+            height: 55px;
+        }
+    }
+};

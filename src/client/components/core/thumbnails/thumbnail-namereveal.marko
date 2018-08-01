@@ -1,0 +1,106 @@
+import { hexToRgb } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser
+        }
+    }
+
+    convertToRgba(color, alpha) {
+        const rgbObject = hexToRgb(color)
+        return `rgba(${rgbObject.r}, ${rgbObject.g}, ${rgbObject.b}, ${alpha})`
+    }
+
+    mousedown(event) {
+        if(event.button == 1) {
+            this.emit('open')
+        }
+    }
+}
+
+$ const color = (
+    input.color ? component.convertToRgba(input.color, 0.5) : 'transparent'
+)
+
+<div.thumbnail-namereveal class=input.class>
+    <image src=input.imageUrl />
+
+    <button-default.overlay
+        style={backgroundColor: color}
+        on-click('emit', 'open')
+        on-mousedown('mousedown')
+    >
+        <if(input.subTextOnTop)>
+            <span.sub-text>
+                ${input.subText}
+            </span>
+        </if>
+
+        <span.text>
+            ${input.text}
+        </span>
+
+        <if(!input.subTextOnTop)>
+            <span.sub-text>
+                ${input.subText}
+            </span>
+        </if>
+    </button-default>
+
+    <if(state.admin && input.removable)>
+        <button-remove on-click('emit', 'remove')/>
+    </if>
+</div>
+
+style.less {
+    .thumbnail-namereveal {
+        overflow: hidden;
+        position: relative;
+
+        .image {
+            object-fit: cover;
+            .absolute-fill();
+            .square(100%);
+        }
+
+        .overlay {
+            align-items: center;
+            color: @color-white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 2vw;
+            text-align: center;
+            .absolute-fill();
+            .opacity(0);
+            .transition(opacity .3s ease-out);
+
+            .text {
+                font-size: 2.5vw;
+                font-weight: bold;
+                letter-spacing: 3px;
+                text-shadow: 0 3px 20px rgba(0, 0, 0, 0.25);
+                text-transform: uppercase;
+                .transition(transform .3s ease-out);
+                .translateY(30px);
+            }
+
+            .sub-text {
+                font-size: 1vw;
+                font-weight: 400;
+                letter-spacing: 1px;
+                .transition(transform .3s ease-out);
+                .translateY(30px);
+            }
+
+            &:hover {
+                .opacity(1);
+
+                & > * {
+                    .translateY(0);
+                }
+            }
+        }
+    }
+};

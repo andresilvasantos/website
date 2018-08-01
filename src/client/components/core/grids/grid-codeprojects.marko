@@ -1,0 +1,76 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    open(codeProject, event) {
+        if(event.button > 1) {
+            return
+        }
+
+        event.preventDefault()
+        window.open(`/codeprojects/${codeProject.id}`, event.button == 0 ? '_self' : '_blank');
+    }
+
+    remove(codeProject) {
+        deleteContent('codeprojects', codeProject, this)
+    }
+}
+
+<div.grid-codeprojects class=input.class>
+    <thumbnail-namereveal.thumbnail
+        for(codeProject in state.content)
+        color=codeProject.mainColor
+        imageUrl=`/static/uploads/${codeProject.images[0]}_x2.jpg`
+        removable
+        subText=codeProject.shortDescription
+        text=codeProject.name
+        on-open('open', codeProject)
+        on-remove('remove', codeProject)
+    />
+</div>
+
+style.less {
+    .grid-codeprojects {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 70%;
+
+            .responsive-max(@break-ms, {
+                .text {
+                    font-size: 5vw;
+                } //eslint-disable-line selector-max-empty-lines
+
+                .sub-text {
+                    font-size: 2vw;
+                }
+            });
+        }
+    }
+};

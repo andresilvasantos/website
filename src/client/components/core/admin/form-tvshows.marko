@@ -1,0 +1,46 @@
+import copy from 'src/client/copy.json';
+
+$ const formsCopy = copy.admin.add.tvShows
+
+class {
+    content() {
+        const idElement = this.getComponent("inputId").getEl()
+        const titleElement = this.getComponent("inputTitle").getEl()
+        const imageUrlElement = this.getComponent("inputImageUrl").getEl()
+        const voteElement = this.getComponent("inputVote").getEl()
+
+        let contentData = {}
+        contentData['imdbId'] = idElement.value
+        contentData['title'] = titleElement.value
+        contentData['imageUrl'] = imageUrlElement.value
+        contentData['vote'] = voteElement.value
+
+        return contentData
+    }
+
+    validContent() {
+        return true
+    }
+}
+
+<div.form-tvshows class=input.class>
+    <text-input key='inputId' placeholder=formsCopy.placeholderId />
+    <text-input key='inputTitle' placeholder=formsCopy.placeholderTitle />
+    <text-input key='inputImageUrl' placeholder=formsCopy.placeholderImageUrl />
+    <text-input key='inputVote' placeholder=formsCopy.placeholderVote />
+</div>
+
+style.less {
+    .form-tvshows {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .text-input {
+            height: 55px;
+        }
+    }
+};

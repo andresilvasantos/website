@@ -1,0 +1,44 @@
+import copy from 'src/client/copy.json';
+
+$ const creationsCopy = copy.home.creations
+
+<div.section-creations class=input.class data-dark='false'>
+    <watermark.title>
+        ${creationsCopy.title}
+    </watermark>
+
+    <div.showcase.bottom-split>
+        <showcase-title title=creationsCopy.shortFilms url='/shortfilms' />
+        <grid-shortfilms content=input.content.shortFilms />
+    </div>
+    <div.showcase.bottom-split>
+        <showcase-title title=creationsCopy.photography url='/photography' />
+        <grid-photography content=input.content.photographs />
+    </div>
+    <div.showcase.bottom-split>
+        <showcase-title
+            title=creationsCopy.electronicMusic
+            url='/electronicmusic'
+        />
+        <grid-electronicmusic content=input.content.electronicMusic />
+    </div>
+    <div.showcase>
+        <showcase-title title=creationsCopy.codeProjects url='/codeprojects' />
+        <grid-codeprojects content=input.content.codeProjects />
+    </div>
+</div>
+
+style.less {
+    .section-creations {
+        background: @color-white;
+        .section-padding();
+
+        .showcase {
+            position: relative;
+        }
+
+        .bottom-split {
+            .subsection-margin();
+        }
+    }
+};

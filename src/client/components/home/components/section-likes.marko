@@ -1,0 +1,39 @@
+import copy from 'src/client/copy.json';
+
+$ const likesCopy = copy.home.likes
+
+<div.section-likes class=input.class data-dark='false'>
+    <watermark>
+        ${likesCopy.title}
+    </watermark>
+
+    <div.list>
+        <showcase-title title=likesCopy.movies url='/movies' />
+        <grid-movies content=input.content.movies />
+    </div>
+    <div.list>
+        <showcase-title title=likesCopy.tvShows url='/tvshows' />
+        <grid-tvshows content=input.content.tvShows />
+    </div>
+    <div.list>
+        <showcase-title title=likesCopy.music url='/music' />
+        <grid-music content=input.content.music />
+    </div>
+    <div.list>
+        <showcase-title title=likesCopy.videoGames url='/videogames' />
+        <grid-videogames content=input.content.videoGames />
+    </div>
+</div>
+
+style.less {
+    .section-likes {
+        background: @color-white;
+        margin-top: -2px;
+        .section-padding();
+
+        .list {
+            position: relative;
+            .subsection-margin();
+        }
+    }
+};

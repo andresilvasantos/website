@@ -1,0 +1,288 @@
+import axios from 'axios'
+import copy from 'src/client/copy.json'
+
+$ const sidebarCopy = copy.sidebar
+$ const adminCopy = copy.admin
+
+$ const categoriesCreation = [{
+    name: sidebarCopy.creations.shortFilms,
+    url: "/shortfilms"
+}, {
+    name: sidebarCopy.creations.photography,
+    url: "/photography"
+}, {
+    name: sidebarCopy.creations.electronicMusic,
+    url: "/electronicmusic"
+}, {
+    name: sidebarCopy.creations.codeProjects,
+    url: "/codeprojects"
+}]
+
+$ const categoriesLike = [{
+    name: sidebarCopy.likes.movies,
+    url: "/movies"
+}, {
+    name: sidebarCopy.likes.tvShows,
+    url: "/tvshows"
+}, {
+    name: sidebarCopy.likes.music,
+    url: "/music"
+}, {
+    name: sidebarCopy.likes.videoGames,
+    url: "/videogames"
+}]
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            admin: out.global.loggedUser,
+            csrf: out.global.csrfToken,
+            opened: false,
+            randomQuote: {}
+        }
+    }
+
+    onInput(input) {
+        this.state.opened = input.opened
+    }
+
+    onMount() {
+        this.sidebarCopy = copy.sidebar
+    }
+
+    toggle() {
+        this.state.opened = !this.state.opened
+
+        if(this.state.opened) {
+            const randomQuote = this.sidebarCopy.quotes[Math.floor(Math.random() * this.sidebarCopy.quotes.length)]
+            this.state.randomQuote = randomQuote
+        }
+    }
+
+    adminLogout() {
+        var that = this
+        axios.get('/admin/logout', {})
+        .then(function (response) {
+            if(response.data.code == 0) {
+                window.open('/', '_self');
+                return
+            }
+
+            console.log(response.data)
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
+    }
+}
+
+<div.main-sidebar class=([input.class, state.opened ? 'opened' : ''])>
+    <div.blind on-click("toggle")/>
+
+    <div.wrapper>
+        <a href="/">
+            <text-h1.home>
+                ${sidebarCopy.home}
+            </text-h1>
+        </a>
+
+        <text-h2.creation-label>
+            ${sidebarCopy.creations.title}
+        </text-h2>
+
+        <ul.list-creations>
+            <li.category for(category in categoriesCreation)>
+                <a href=category.url>
+                    <text-h5>
+                        ${category.name}
+                    </text-h5>
+                </a>
+            </li>
+        </ul>
+
+        <text-h2.like-label>
+            ${sidebarCopy.likes.title}
+        </text-h2>
+
+        <ul.list-likes>
+            <li.category for(category in categoriesLike)>
+                <a href=category.url>
+                    <text-h5>
+                        ${category.name}
+                    </text-h5>
+                </a>
+            </li>
+        </ul>
+
+        <div.wrapper-quote>
+            <text-p.quote>
+                "${state.randomQuote.quote}"<br>
+                <span.quote-author>~ ${state.randomQuote.author}</span>
+            </text-p>
+        </div>
+    </div>
+
+    <button-sidebar
+        color=input.buttonColor
+        opened=state.opened
+        on-click("toggle")
+    />
+
+    <if(state.admin)>
+        <button-text.button-admin-logout
+            href='/admin/logout'
+            link
+            text=adminCopy.logout
+        />
+    </if>
+</div>
+
+style.less {
+    .main-sidebar {
+        height: 100vh;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 3;
+
+        .blind {
+            background-color: @color-codgray;
+            height: 100%;
+            opacity: 0;
+            width: 100%;
+            .absolute-fill();
+            .transition(opacity .2s ease-out);
+        }
+
+        .wrapper {
+            background-color: @color-white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            padding: 30px;
+            transform: translateX(-100%);
+            width: 300px;
+            .transition(transform .2s ease-out);
+
+            .responsive-max(@break-ms, {
+                width: 100%;
+            });
+
+            .home {
+                color: @color-mineshaft;
+                font-size: 35px;
+                letter-spacing: -2px;
+                line-height: 0.9;
+                margin-bottom: 40px;
+                padding-top: 1.5em;
+                text-align: right;
+                text-transform: uppercase;
+                .transition(transform .2s ease-out);
+
+                .responsive-max(@break-ms, {
+                    margin-bottom: 20px;
+                    text-align: center;
+                });
+            }
+
+            .creation-label,
+            .like-label {
+                color: @color-black;
+                margin-bottom: 10px;
+                margin-right: -5px;
+                opacity: 0.05;
+                text-align: right;
+                text-transform: uppercase;
+
+                .responsive-max(@break-ms, {
+                    margin-right: 0;
+                    text-align: center;
+                });
+            }
+
+            .list-creations,
+            .list-likes {
+                margin-bottom: 40px;
+                text-align: right;
+
+                .responsive-max(@break-ms, {
+                    margin-bottom: 20px;
+                    text-align: center;
+                });
+            }
+
+            .category {
+                margin-bottom: 5px;
+                padding: 5px 0;
+
+                a > .text-h5 {
+                    color: @color-codgray;
+                    .transition(margin-right 0.2s ease-out);
+                }
+
+                &:hover {
+                    background-color: @color-mineshaft;
+
+                    a > .text-h5 {
+                        color: @color-white;
+
+                        .responsive-min(@break-ms, {
+                            margin-right: 5px;
+                        });
+                    }
+                }
+            }
+
+            .wrapper-quote {
+                color: @color-silver;
+                margin-top: auto;
+                text-align: center;
+                width: 100%;
+
+                .quote {
+                    letter-spacing: 0.04em;
+                    line-height: 1.2;
+                }
+
+                .quote-author {
+                    font-size: 12px;
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        &.opened {
+            pointer-events: auto;
+
+            .blind {
+                opacity: 0.6;
+                pointer-events: auto;
+            }
+
+            .wrapper {
+                transform: translateX(0);
+            }
+        }
+
+        .button-sidebar {
+            left: 5px;
+            position: absolute;
+            top: 10px;
+            z-index: 10;
+        }
+
+        .button-admin-logout {
+            position: absolute;
+            right: 30px;
+            text-transform: uppercase;
+            top: -2px;
+            .drop-shadow();
+
+            .text {
+                font-size: 16px;
+            }
+        }
+    }
+};

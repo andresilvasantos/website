@@ -1,0 +1,70 @@
+import copy from 'src/client/copy.json';
+import { getComponentForEl } from 'marko/components'
+
+$ const voidCopy = copy.void
+$ const randomWord = voidCopy.randomWords[Math.floor(Math.random() * voidCopy.randomWords.length)]
+
+class {
+    onMount() {
+        const buttonSidebarElement = document.querySelector('.button-sidebar');
+        const buttonSidebarComponent = getComponentForEl(buttonSidebarElement);
+
+        buttonSidebarComponent.setDarkMode(true)
+    }
+}
+
+<div.composer>
+    <div.wrapper>
+        <span.question>
+            ${voidCopy.lookingFor} ${randomWord}?
+        </span>
+
+        <div.options>
+            <button-text
+                href='/'
+                link
+                text=voidCopy.optionNo
+            />
+            <button-text.yes
+                href=`http://google.com/search?q=${randomWord}`
+                link
+                text=voidCopy.optionYes
+            />
+        </div>
+    </div>
+</div>
+
+style.less {
+    .composer {
+        background-image: @gradient-softblue;
+        height: 100vh;
+        width: 100%;
+
+        .wrapper {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            margin: auto;
+            text-align: center;
+            text-transform: uppercase;
+            width: 60%;
+
+            .question {
+                font-size: 4vw;
+                font-weight: 600;
+            }
+
+            .options {
+                align-items: center;
+                display: flex;
+                margin-top: 40px;
+
+                .yes {
+                    margin-left: 12vw;
+                }
+            }
+        }
+    }
+};

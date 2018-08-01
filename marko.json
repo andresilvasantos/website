@@ -1,0 +1,11 @@
+{
+    "tagsDir": [
+        "./src/client/components/core",
+        "./src/client/components/core/admin",
+        "./src/client/components/core/frames",
+        "./src/client/components/core/grids",
+        "./src/client/components/core/thumbnails",
+        "./src/client/components/core/type",
+        "./src/client/components/main"
+    ]
+}

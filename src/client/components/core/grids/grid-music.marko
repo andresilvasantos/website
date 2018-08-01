@@ -1,0 +1,58 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    remove(musicVideo) {
+        deleteContent('music', musicVideo, this)
+    }
+}
+
+<div.grid-music class=input.class>
+    <frame-youtube
+        for(musicVideo in state.content)
+        removable
+        videoId=musicVideo.youtubeId
+        videoTitle=musicVideo.title
+        on-remove('remove', musicVideo)
+    />
+</div>
+
+style.less {
+    .grid-music {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .responsive-max(@break-xs, {
+            grid-template-columns: repeat(1, 1fr);
+        });
+
+        .frame-youtube {
+            padding-top: 56.25%;
+        }
+    }
+};

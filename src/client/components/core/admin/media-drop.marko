@@ -1,0 +1,292 @@
+import copy from 'src/client/copy.json';
+import { setupDropzone } from "src/client/utils"
+
+$ const mediaDropCopy = copy.mediaDrop
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            maxMediaCount: input.maxMediaCount || 20
+        }
+    }
+
+    onMount() {
+        const mediaDropElement = this.getEl('mediaDrop')
+        const addImagesElement = this.getEl('addImages')
+        const messageElement = this.getEl('messageDrop')
+
+        this.dropzone = setupDropzone(
+            this.state.maxMediaCount,
+            mediaDropElement,
+            messageElement,
+            addImagesElement,
+            this.state.csrf
+        )
+    }
+
+    media() {
+        const children = this.dropzone.element.children
+
+        const dropzoneFiles = this.dropzone.files
+                .sort(function(a, b){
+                    return (Array.prototype.indexOf.call(children, a.previewElement) >
+                        Array.prototype.indexOf.call(children, b.previewElement)) ? 1 : -1;
+                })
+
+        return dropzoneFiles
+    }
+
+    mediaCount() {
+        return this.dropzone.files.length
+    }
+}
+
+$ const widthDivision = state.maxMediaCount > 5 ? 5 : state.maxMediaCount
+
+<div.media-drop class=input.class key='mediaDrop'>
+    <div.images-empty-messages-holder key='messageDrop'>
+        <text-h5.drag-message>
+            ${mediaDropCopy.dropMessage}
+        </text-h5>
+        <text-p.click-message>
+            ${mediaDropCopy.clickMessage}
+        </text-p>
+    </div>
+    <div.add-image
+        key='addImages'
+        style={width: (100 / widthDivision) + '%'}
+    >
+        <div>
+            <span>
+                +
+            </span>
+        </div>
+    </div>
+</div>
+
+style.less {
+    .media-drop {
+        border: 1px solid @color-gallery;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-height: 8rem;
+        padding: 1rem;
+        position: relative;
+        width: 100%;
+
+        .border-radius(0.2rem);
+
+        &.invalid {
+            border: 1px solid @color-wrong;
+        }
+
+        &.dz-drag-hover {
+            border: 2px dashed @color-white;
+        }
+
+        &.dz-started .dz-message {
+            display: none;
+        }
+
+        .images-empty-messages-holder {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            left: 0;
+            position: absolute;
+            text-align: center;
+            top: 0;
+
+            .size(100%, 100%);
+
+            .drag-message {
+                color: @color-white;
+                display: block;
+                margin-top: 0.4rem;
+            }
+
+            .image-icon {
+                color: @color-white;
+                font-size: 3rem;
+            }
+
+            .click-message {
+                color: @color-gallery;
+                font-size: 0.8rem;
+                margin-top: 0.2rem;
+            }
+        }
+
+        &.dz-drag-hover .images-empty-messages-holder .image-icon {
+            color: @color-mineshaft;
+        }
+
+        .add-image {
+            border: solid 0.5rem rgba(0, 0, 0, 0);
+            cursor: pointer;
+            display: block;
+
+            &.hidden {
+                display: none;
+            }
+
+            & > div {
+                align-items: center;
+                background-color: @color-white;
+                border-radius: 5px;
+                display: flex;
+                padding-top: 100%;
+                position: relative;
+                text-align: center;
+
+                .size(100%, auto);
+
+                & > span {
+                    color: @color-mineshaft;
+                    font-size: 80px;
+                    position: absolute;
+                    top: 50%;
+                    width: 100%;
+
+                    .translate(0, -50%);
+                }
+            }
+
+            &:hover {
+                span {
+                    font-size: 100px;
+                }
+            }
+        }
+
+        &:not(.dz-started) .add-image {
+            display: none;
+        }
+
+        .dz-preview,
+        .dz-image-preview {
+            border: solid 0.5rem fade(@color-black, 0);
+            display: block;
+            position: relative;
+            .transition();
+            .user-select(none);
+
+            .dz-progress {
+                background-color: @color-mineshaft;
+                bottom: 10%;
+                height: 6px;
+                left: 6px;
+                position: absolute;
+                right: 6px;
+
+                .dz-upload {
+                    background-color: @color-charlotte;
+                    display: block;
+                    height: 100%;
+                }
+            }
+
+            .dz-image {
+                overflow: hidden;
+                padding-top: 100%;
+                position: relative;
+                .border-radius(.2rem);
+                .box-shadow(0px 0px 0px .3rem @color-mineshaft);
+                .size(100%, auto);
+
+                img {
+                    object-fit: cover;
+                    position: absolute;
+                    top: 0;
+                    .square(100%);
+                }
+            }
+
+            .dz-details {
+                display: none;
+            }
+
+            &.ghost.dragging {
+                opacity: 0;
+            }
+
+            .button-remove {
+                align-items: center;
+                background-color: @color-wrong;
+                display: flex;
+                justify-content: center;
+                opacity: 0;
+                position: absolute;
+                right: 0.5rem;
+                text-align: center;
+                top: 0.5rem;
+                .square(30px);
+
+                span {
+                    color: @color-white;
+                    font-weight: 600;
+                }
+            }
+
+            &:hover {
+                .button-remove {
+                    opacity: 1;
+                }
+            }
+
+            .dz-success-mark,
+            .dz-error-mark {
+                display: none;
+            }
+
+            .dz-error-message {
+                background-color: @color-wrong;
+                border-radius: 8px;
+                color: @color-white;
+                display: none;
+                font-size: 13px;
+                left: -10px;
+                opacity: 0;
+                padding: 0.5em 1.2em;
+                pointer-events: none;
+                position: absolute;
+                top: 130px;
+                width: 140px;
+                z-index: 1000;
+                .transition(opacity 0.2s ease-out);
+            }
+
+            &.dz-error .dz-error-message {
+                //display: block;
+            }
+
+            &.dz-error:hover .dz-error-message {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /*&:after {
+                content: '';
+                position: absolute;
+                top: -6px;
+                left: 64px;
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-bottom: 6px solid #be2626;
+            }*/
+        }
+
+        & > .dz-preview ~ .dz-preview,
+        & > .dz-image-preview ~ .dz-image-preview {
+            .dz-image {
+                .box-shadow(none);
+            }
+        }
+    }
+};

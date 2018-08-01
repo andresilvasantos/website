@@ -1,0 +1,223 @@
+import copy from 'src/client/copy.json';
+
+$ const footerCopy = copy.footer
+
+static var barCount;
+static var barTranslationFactor;
+
+class {
+    onCreate() {
+        this.state = {
+            active: false,
+            count: 0
+        };
+        this.step = .4;
+    }
+
+    onMount() {
+        this.nextFrame = this.nextFrame.bind(this);
+
+        const debounce = (cb) => () => window.requestAnimationFrame(cb);
+        const handleResize = debounce(() => {
+            this.scale()
+        });
+
+        const handleScroll = debounce(() => {
+            if(this.shouldShowAnimation()) {
+                this.start();
+            }
+            else {
+                this.stop()
+            }
+        });
+
+        window.addEventListener('resize', handleResize)
+        window.addEventListener('scroll', handleScroll)
+
+        this.scale();
+
+        if(this.shouldShowAnimation()) {
+            this.start();
+        }
+    }
+
+    start() {
+        if(!this.state.active) {
+            this.state.active = true;
+            this.nextFrame();
+        }
+    }
+
+    stop() {
+        this.state.active = false;
+    }
+
+    scale() {
+        barCount = Math.min(50, Math.max(Math.floor(window.innerWidth/20), 25))
+        barTranslationFactor = window.innerWidth < 700 ? 60 : 20
+    }
+
+    switchDirection() {
+        this.step *= -1;
+    }
+
+    nextFrame() {
+        if (this.state.active) {
+            this.state.count += this.step;
+            window.requestAnimationFrame(this.nextFrame);
+        }
+    }
+
+    shouldShowAnimation() {
+        const animationElement = this.getEl('animation');
+
+        return animationElement.getBoundingClientRect().top < window.innerHeight
+    }
+}
+
+<footer.main-footer class=input.class>
+    <div.wrapper-animation key='animation' on-mousedown('switchDirection')>
+        $ var count = state.count;
+
+        <for(let i = 0; i < barCount; ++i)>
+            $ var translateX = Math.sin(i / barCount)
+            $ var translateY = Math.sin(count / 10 + i / 5) * 100 * .2
+            $ var red = parseInt(Math.sin(count / 1000 + i / 5) * 80)
+            $ var green = parseInt(
+                Math.sin(count / 40 + i * 2 / barCount * 2) * 180
+            )
+            $ var blue = parseInt(Math.sin(count / 10 + i / 10) * 100 + 200)
+            $ var green = parseInt(Math.sin(i / barCount) * 255)
+            $ var blue = parseInt(Math.sin(count/100) * 50 + 200)
+            $ var color = `rgb(${red},${green},${blue})`
+            $ var rotation = count * 0.1
+            $ var barX = (
+                (i / barCount) * (100 + barTranslationFactor) -
+                barTranslationFactor / 2
+            )
+            $ var scale = 10
+
+            $ var style = {
+                backgroundColor: color,
+                borderRadius: '50%',
+                height: '40px',
+                left: barX + '%',
+                position: 'absolute',
+                transform: `
+                    scale(${scale})
+                    translate(calc(${translateX}vw + 50%),${translateY}%)
+                    rotate(${rotation}deg)
+                `,
+                width: '20px'
+            };
+
+            <div.bar style=style />
+        </for>
+    </div>
+    <div.wrapper-copyright>
+        <text-h5.copyright>
+            <span.name>$!{footerCopy.copyright.name}</span>
+            <span.last-names>$!{footerCopy.copyright.lastNames}</span>
+            <span.date>&copy;${new Date().getFullYear()}</span>
+        </text-h5>
+    </div>
+    <div.wrapper-icons>
+        <a href='https://github.com/andresilvasantos' target='_blank'>
+            <rawhtml>
+                <include-html('src/client/assets/images/github.svg') />
+            </rawhtml>
+        </a>
+        <a href='https://twitter.com/andre_santos_pt' target='_blank'>
+            <rawhtml>
+                <include-html('src/client/assets/images/twitter.svg') />
+            </rawhtml>
+        </a>
+        <a href='https://soundcloud.com/ein' target='_blank'>
+            <rawhtml>
+                <include-html('src/client/assets/images/soundcloud.svg') />
+            </rawhtml>
+        </a>
+        <a
+            href='https://www.youtube.com/channel/UCge7nGA4Iw0vafnPeB-k7hQ'
+            target='_blank'
+        >
+            <rawhtml>
+                <include-html('src/client/assets/images/youtube.svg') />
+            </rawhtml>
+        </a>
+    </div>
+</footer>
+
+style.less {
+    .main-footer {
+        align-items: center;
+        background-color: @color-codgray;
+        color: @color-white;
+        display: flex;
+        justify-content: space-between;
+        min-height: 200px;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        .section-padding();
+
+        .responsive-max(@break-ms, {
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        });
+
+        .wrapper-animation {
+            .absolute-fill();
+        }
+
+        .wrapper-copyright {
+            position: relative;
+
+            .responsive-max(@break-ms, {
+                order: 2;
+            });
+
+            .copyright {
+                text-transform: uppercase;
+
+                .date {
+                    opacity: 0.3;
+                }
+
+                .name,
+                .last-names {
+                    font-weight: 900;
+                }
+            }
+        }
+
+        .wrapper-icons {
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+
+            .responsive-max(@break-ms, {
+                order: 1;
+                margin-bottom: 20px;
+            });
+
+            a {
+                color: @color-white;
+                .square(30px);
+
+                &:not(:first-child) {
+                    margin-left: 20px;
+                }
+
+                .responsive-max(@break-ms, {
+                    .square(30px);
+                });
+
+                .responsive-max(@break-sm, {
+                    .square(20px);
+                });
+            }
+        }
+    }
+};

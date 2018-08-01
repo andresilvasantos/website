@@ -1,0 +1,376 @@
+class {
+    onCreate(input) {
+        this.state = {
+            currentIndex: 0,
+            imageLoaded: false,
+            images: []
+        }
+    }
+
+    onMount() {
+        this.gallery = this.getEl('gallery')
+
+        this.mousePressed = false
+        this.startX = 0
+        this.lastX = 0
+        this.direction = 0
+    }
+
+    setCurrentIndex(index) {
+        this.state.currentIndex = index
+    }
+
+    setImages(images) {
+        this.state.images = images
+        this.setStateDirty('images')
+    }
+
+    addEventListeners() {
+        this.gallery.addEventListener("mousedown", this.touchPressed.bind(this))
+        this.gallery.addEventListener("touchstart", this.touchPressed.bind(this))
+        this.gallery.addEventListener("mouseup", this.touchReleased.bind(this))
+        this.gallery.addEventListener("touchend", this.touchReleased.bind(this))
+        this.gallery.addEventListener("mousemove", this.touchMoved.bind(this))
+        this.gallery.addEventListener("touchmove", this.touchMoved.bind(this))
+    }
+
+    removeEventListeners() {
+        this.gallery.removeEventListener("mousedown", this.touchPressed)
+        this.gallery.removeEventListener("touchstart", this.touchPressed)
+        this.gallery.removeEventListener("mouseup", this.touchReleased)
+        this.gallery.removeEventListener("touchend", this.touchReleased)
+        this.gallery.removeEventListener("mousemove", this.touchMoved)
+        this.gallery.removeEventListener("touchmove", this.touchMoved)
+    }
+
+    /**
+     * Get the touch positions for both desktop and mobile events.
+     */
+
+    eventPosition(event) {
+        let position = {};
+
+        if(
+            event.type == "touchstart" ||
+            event.type == "touchmove" ||
+            event.type == "touchend"
+        ) {
+            const rect = event.target.getBoundingClientRect()
+            position.clientX = event.touches[0].pageX
+            position.clientY = event.touches[0].pageY
+            position.offsetX = event.touches[0].pageX - rect.left
+            position.offsetY = event.touches[0].pageY - rect.top
+        }
+        else {
+            position.clientX = event.clientX
+            position.clientY = event.clientY
+            position.offsetX = event.offsetX
+            position.offsetY = event.offsetY
+        }
+
+        return position;
+    }
+
+    /**
+     * Touch pressed.
+     */
+
+    touchPressed(event) {
+        event.preventDefault()
+
+        const position = this.eventPosition(event);
+
+        this.mousePressed = true
+        this.startX = position.clientX
+        this.lastX = position.clientX
+        this.direction = 0
+    }
+
+    /**
+     * Touch released.
+     */
+
+    touchReleased(event) {
+        if(this.mousePressed) {
+            this.dragFinished()
+        }
+        this.mousePressed = false
+    }
+
+    /**
+     * Touch moved.
+     */
+
+    touchMoved(event) {
+        event.preventDefault()
+
+        if(!this.mousePressed) return
+
+        const position = this.eventPosition(event);
+
+        const translationFromStart = position.clientX - this.startX
+        const galleryWidth = this.gallery.getBoundingClientRect().width
+        const index = this.state.currentIndex
+        const translationPercentage = translationFromStart / galleryWidth
+
+        this.gallery.style.transform = `
+            translateX(${(-index + translationPercentage) * 100}%)
+        `
+
+        if(position.clientX - this.lastX > 2) {
+            this.direction = 1
+        }
+        else if(position.clientX - this.lastX < -2) {
+            this.direction = -1
+        }
+
+        if(position.clientX < galleryWidth * .04) {
+            this.mousePressed = false
+            this.dragFinished()
+        }
+        else if(position.clientX >= galleryWidth * .96) {
+            this.mousePressed = false
+            this.dragFinished()
+        }
+
+        this.lastX = position.clientX
+    }
+
+    /**
+     * Drag finished.
+     */
+
+    dragFinished() {
+        let slided = false
+
+        if(this.direction == -1) {
+            if(this.rightRequested()) slided = true
+        }
+        else if(this.direction == 1) {
+            if(this.leftRequested()) slided = true
+        }
+
+        if(!slided) {
+            this.updateSliderPosition()
+        }
+    }
+
+    hide() {
+        this.removeEventListeners()
+
+        this.getEl('slider').style.display = 'none'
+    }
+
+    show() {
+        this.addEventListeners()
+
+        this.getEl('slider').style.display = 'block'
+
+        // No animation when first display
+        this.gallery.classList.add('no-transition')
+        this.updateSliderPosition()
+
+        // Hack to force class change.
+        this.gallery.offsetHeight;
+        this.gallery.classList.remove('no-transition')
+    }
+
+    leftRequested(event) {
+        const dragging = event == null
+
+        let index = this.state.currentIndex - 1
+        if(index < 0) {
+            if(dragging) {
+                return false
+            }
+            index = this.state.images.length - 1
+        }
+
+        this.state.currentIndex = index
+        this.updateSliderPosition()
+
+        return true
+    }
+
+    rightRequested(event) {
+        const dragging = event == null
+
+        let index = this.state.currentIndex + 1
+        if(index >= this.state.images.length) {
+            if(dragging) {
+                return false
+            }
+            index = 0
+        }
+
+        this.state.currentIndex = index
+        this.updateSliderPosition()
+
+        return true
+    }
+
+    updateSliderPosition() {
+        const index = this.state.currentIndex
+        const percentage = (index / this.state.images.length) * 100
+        //this.gallery.style.transform = `translateX(-${percentage}%)`
+        this.gallery.style.transform = `translateX(-${index * 100}%)`
+    }
+}
+
+<div.slider-image key='slider' class=input.class>
+    <div.background on-click('hide') />
+    <div.wrapper-gallery>
+        <div.gallery key='gallery'>
+            <image
+                for(let i = 0; i < state.images.length; ++i)
+                smallSrc=`/static/uploads/${state.images[i]}_x3.jpg`
+                src=`/static/uploads/${state.images[i]}_x1.jpg`
+                style={transform: `translateX(${i * 100}%)`}
+            />
+        </div>
+    </div>
+
+    <div.wrapper-buttons>
+        <div.buttons-padding>
+            <button-default.button-exit on-click('hide')>
+                <div.cross>
+                    <rawhtml>
+                        <include-html("src/client/assets/images/cross.svg") />
+                    </rawhtml>
+                </div>
+            </button-default>
+            <button-default.button-left-arrow on-click('leftRequested')>
+                <div.left-arrow>
+                    <rawhtml>
+                        <include-html("src/client/assets/images/arrow.svg") />
+                    </rawhtml>
+                </div>
+            </button-default>
+            <button-default.button-right-arrow on-click('rightRequested')>
+                <div.right-arrow>
+                    <rawhtml>
+                        <include-html("src/client/assets/images/arrow.svg") />
+                    </rawhtml>
+                </div>
+            </button-default>
+        </div>
+    </div>
+</div>
+
+style.less {
+    .slider-image {
+        display: none;
+        .fixed-fill();
+
+        .background {
+            background-color: fade(@color-black, 90);
+            .absolute-fill();
+        }
+
+        .wrapper-gallery {
+            position: relative;
+            .square(100%);
+
+            .gallery {
+                display: flex;
+                .square(100%);
+                .transition(transform 0.2s ease-out);
+
+                &.no-transition {
+                    .transition(none);
+                }
+
+                .image {
+                    object-fit: contain;
+                    .absolute-fill();
+                    .sidebar-padding();
+                    .square(100%);
+                }
+            }
+        }
+
+        .wrapper-buttons {
+            pointer-events: none;
+            .absolute-fill();
+            .sidebar-padding();
+            .square(100%);
+
+            .buttons-padding {
+                position: relative;
+                .square(100%);
+
+                .button-exit {
+                    background-color: @color-white;
+                    color: fade(@color-codgray, 80);
+                    position: absolute;
+                    right: 0;
+
+                    .cross {
+                        transform: scale(0.5);
+                        .square(100%);
+                    }
+                }
+
+                .button-left-arrow {
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    .left-arrow {
+                        transform: rotate(180deg) scale(0.5);
+                        .square(100%);
+                    }
+                }
+
+                .button-right-arrow {
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    .right-arrow {
+                        transform: scale(0.5);
+                        .square(100%);
+                    }
+                }
+
+                .button-exit,
+                .button-left-arrow,
+                .button-right-arrow {
+                    background-color: @color-white;
+                    color: fade(@color-codgray, 80);
+                    position: absolute;
+                    .square(50px);
+                    .transition(background-color 0.2s ease-out);
+
+                    &:hover {
+                        background-color: @color-gallery;
+                        color: @color-codgray;
+                    }
+
+                    .responsive-max(@break-md, {
+                        .square(45px); //eslint-disable-line selector-max-empty-lines
+
+                        &:not(.button-exit) {
+                            background-color: fade(@color-white, 20);
+                            color: fade(@color-white, 80); //eslint-disable-line selector-max-empty-lines
+
+                            &:hover {
+                                background-color: fade(@color-white, 40);
+                                color: @color-white;
+                            }
+                        }
+                    });
+
+                    .responsive-max(@break-xs, {
+                        .square(35px); //eslint-disable-line selector-max-empty-lines
+
+                        &:not(.button-exit) {
+                            background-color: fade(@color-white, 10);
+                            color: fade(@color-white, 60);
+                        }
+                    });
+                }
+            }
+        }
+    }
+};

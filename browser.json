@@ -1,0 +1,6 @@
+{
+    "dependencies": [
+        "src/client/styles-global/theme.less",
+        "src/client/styles-global/utils.less"
+    ]
+}

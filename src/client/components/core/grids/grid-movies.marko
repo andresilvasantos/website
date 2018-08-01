@@ -1,0 +1,60 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    remove(movie) {
+        deleteContent('movies', movie, this)
+    }
+}
+
+<div.grid-movies class=input.class>
+    <thumbnail-link.thumbnail
+        for(movie in state.content)
+        imageUrl=movie.imageUrl
+        removable
+        subText=`${movie.vote} / 10`
+        text=movie.title
+        url=`https://www.imdb.com/title/${movie.imdbId}`
+        on-remove('remove', movie)
+    />
+</div>
+
+style.less {
+    .grid-movies {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(4, 1fr);
+        });
+
+        .responsive-max(@break-xs, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 148%;
+        }
+    }
+};

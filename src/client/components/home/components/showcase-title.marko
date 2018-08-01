@@ -1,0 +1,91 @@
+<div.showcase-title>
+    <a.background href=input.url />
+
+    <div.wrapper-title>
+        <text-h3.title>
+            ${input.title}
+        </text-h3>
+
+        <div.arrow>
+            <rawhtml>
+                <include-html("src/client/assets/images/arrow.svg") />
+            </rawhtml>
+        </div>
+    </div>
+</div>
+
+style.less {
+    .showcase-title {
+        display: inline-block;
+        margin-bottom: 20px;
+        position: relative;
+
+        @arrow-size: 35px;
+        @background-margin: 10px;
+
+        .background {
+            border: solid 2px @color-mineshaft;
+            .absolute-fill();
+            .transition(right .2s ease-out);
+        }
+
+        .wrapper-title {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            pointer-events: none;
+            position: relative;
+
+            .title {
+                color: @color-mineshaft;
+                padding: @background-margin 20px;
+                text-transform: uppercase;
+                .transition(color .2s ease-out);
+            }
+
+            .arrow {
+                color: @color-mineshaft;
+                opacity: 0;
+                position: absolute;
+                right: 0;
+                top: 50%;
+                .square(@arrow-size);
+                .transition(opacity .2s ease-out, transform .2s ease-out;);
+                .translate(0, -50%);
+
+                .responsive-max(@break-xs, {
+                    transform: translateY(-50%) scale(0.5);
+                });
+
+                .responsive-max(@break-ms, {
+                    transform: translateY(-50%) scale(0.7);
+                });
+            }
+        }
+
+        &:hover {
+            .background {
+                right: -(@arrow-size + @background-margin);
+            }
+
+            .wrapper-title {
+                .title {
+                    color: @color-codgray;
+                }
+
+                .arrow {
+                    opacity: 1;
+                    .translate(@arrow-size, -50%);
+
+                    .responsive-max(@break-xs, {
+                        transform: translate(@arrow-size, -50%) scale(0.5);
+                    });
+
+                    .responsive-max(@break-ms, {
+                        transform: translate(@arrow-size, -50%) scale(0.7);
+                    });
+                }
+            }
+        }
+    }
+};

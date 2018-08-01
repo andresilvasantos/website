@@ -1,0 +1,15 @@
+<div.button-default
+    class=input.class
+    style=input.style
+    on-click('emit', 'click')
+    on-mousedown('emit', 'mousedown')
+>
+    <include(data.renderBody) />
+</div>
+
+style.less {
+    .button-default {
+        cursor: pointer;
+        pointer-events: auto;
+    }
+};

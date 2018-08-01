@@ -1,0 +1,179 @@
+import axios from 'axios';
+import copy from 'src/client/copy.json';
+import { getComponentForEl } from 'marko/components'
+
+$ const adminCopy = copy.admin
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken
+        }
+    }
+
+    onMount() {
+        const buttonSidebarElement = document.querySelector('.button-sidebar');
+        const buttonSidebarComponent = getComponentForEl(buttonSidebarElement);
+
+        buttonSidebarComponent.setDarkMode(true)
+    }
+
+    keyPressed(event) {
+        if(event.keyCode == 13) {
+            this.submitLogin()
+        }
+    }
+
+    submitLogin() {
+        const usernameElement = this.getComponent("inputUsername").getEl()
+        const passwordElement = this.getComponent("inputPassword").getEl()
+
+        console.log(usernameElement, passwordElement)
+
+        if(usernameElement.value.length < 4) {
+            this.hideStatusMessage()
+            usernameElement.classList.add("invalid")
+            return
+        }
+
+        if(passwordElement.value.length < 6) {
+            this.hideStatusMessage()
+            passwordElement.classList.add("invalid")
+            return
+        }
+
+        var that = this
+        axios.post('/admin/login', {
+            username: usernameElement.value,
+            password: passwordElement.value,
+            _csrf: this.state.csrf
+        })
+        .then(function (response) {
+            if(response.data.code == 0) {
+                window.open('/', '_self');
+                return
+            }
+            that.showStatusMessage(response.data.description, response.data.code)
+        })
+        .catch(function (error) {
+            that.showStatusMessage('Problem connecting to server.', -2)
+        });
+    }
+
+    usernameRemoveInvalidBorder() {
+        const usernameElement = this.getComponent("inputUsername").getEl()
+        usernameElement.classList.remove('invalid')
+    }
+
+    passwordRemoveInvalidBorder() {
+        const passwordElement = this.getComponent("inputPassword").getEl()
+        passwordElement.classList.remove('invalid')
+    }
+
+    hideStatusMessage() {
+        var statusElement = this.getEl('statusMessage');
+        statusElement.classList.remove('show')
+    }
+
+    showStatusMessage(message, code) {
+        this.usernameRemoveInvalidBorder()
+        this.passwordRemoveInvalidBorder()
+
+        const statusElement = this.getEl('statusMessage');
+
+        statusElement.querySelector('p').innerHTML = message
+        if(!statusElement.classList.contains('show')) statusElement.classList.add('show')
+        if(code != 0) statusElement.classList.add('wrong')
+        else statusElement.classList.remove('wrong')
+    }
+}
+
+<div.section-login class=input.class>
+    <div.panel-login>
+        <text-h4.title>
+            ${adminCopy.login.title}
+        </text-h4>
+        <text-input
+            key='inputUsername'
+            placeholder=adminCopy.login.placeholderUsername
+            on-keyup('keyPressed')
+        />
+        <text-input
+            key='inputPassword'
+            placeholder=adminCopy.login.placeholderPassword
+            type='password'
+            on-keyup('keyPressed')
+        />
+        <div.status-message key='statusMessage'>
+            <text-p/>
+        </div>
+        <button-text.button-login
+            text=adminCopy.login.button
+            on-click('submitLogin')
+        />
+    </div>
+</div>
+
+style.less {
+    .section-login {
+        align-items: center;
+        background-image: @gradient-softblue;
+        display: flex;
+        justify-content: center;
+
+        .panel-login {
+            align-items: start;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 600px;
+            overflow: hidden;
+            padding: 80px 50px;
+            width: 400px;
+
+            & > * {
+                margin-bottom: 30px;
+            }
+
+            .title {
+                color: @color-mineshaft;
+                text-transform: uppercase;
+            }
+
+            .text-input {
+                background-color: fade(@color-white, 0);
+                height: 55px;
+                width: 100%;
+
+                &:focus {
+                    background-color: @color-white;
+                }
+            }
+
+            .status-message {
+                background-color: fade(@color-mineshaft, 25%);
+                color: darken(@color-white, 20%);
+                display: none;
+                justify-content: center;
+                padding: 0.5em 1em;
+                text-align: center;
+                width: 100%;
+                .border-radius(.2rem);
+
+                &.show {
+                    display: flex;
+                }
+
+                &.wrong {
+                    background-color: fade(@color-wrong, 25%);
+                    color: darken(@color-wrong, 20%);
+                }
+            }
+
+            .button-login > .text {
+                font-size: 16px;
+            }
+        }
+    }
+};

@@ -1,0 +1,43 @@
+import copy from 'src/client/copy.json';
+
+$ const formsCopy = copy.admin.add.videoGames
+
+class {
+    content() {
+        const urlElement = this.getComponent("inputUrl").getEl()
+        const titleElement = this.getComponent("inputTitle").getEl()
+        const imageUrlElement = this.getComponent("inputImageUrl").getEl()
+
+        let contentData = {}
+        contentData['url'] = urlElement.value
+        contentData['title'] = titleElement.value
+        contentData['imageUrl'] = imageUrlElement.value
+
+        return contentData
+    }
+
+    validContent() {
+        return true
+    }
+}
+
+<div.form-videogames class=input.class>
+    <text-input key='inputUrl' placeholder=formsCopy.placeholderUrl />
+    <text-input key='inputTitle' placeholder=formsCopy.placeholderTitle />
+    <text-input key='inputImageUrl' placeholder=formsCopy.placeholderImageUrl />
+</div>
+
+style.less {
+    .form-videogames {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(1, 1fr);
+        });
+
+        .text-input {
+            height: 55px;
+        }
+    }
+};

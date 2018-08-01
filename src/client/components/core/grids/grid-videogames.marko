@@ -1,0 +1,59 @@
+import { deleteContent } from "src/client/utils"
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            csrf: out.global.csrfToken,
+            content: input.content
+        }
+    }
+
+    onInput(input) {
+        this.state.content = input.content
+
+        if(this.mounted) {
+            this.setStateDirty('content')
+        }
+    }
+
+    onMount() {
+        this.mounted = true
+    }
+
+    remove(videoGame) {
+        deleteContent('videogames', videoGame, this)
+    }
+}
+
+<div.grid-videogames>
+    <thumbnail-link.thumbnail
+        for(videoGame in state.content)
+        imageUrl=videoGame.imageUrl
+        removable
+        text=videoGame.title
+        url=videoGame.url
+        on-remove('remove', videoGame)
+    />
+</div>
+
+style.less {
+    .grid-videogames {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        position: relative;
+        width: 100%;
+        .grid-spacing();
+
+        .responsive-max(@break-ms, {
+            grid-template-columns: repeat(2, 1fr);
+        });
+
+        .responsive-max(@break-xs, {
+            grid-template-columns: repeat(1, 1fr);
+        });
+
+        .thumbnail {
+            padding-top: 56.25%;
+        }
+    }
+};

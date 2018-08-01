@@ -1,0 +1,23 @@
+<text-h2.watermark class=input.class>
+    <include(data.renderBody)/>
+</text-h2>
+
+style.less {
+    .watermark {
+        color: @color-black;
+        font-size: 12vw !important;
+        margin-bottom: 50px;
+        opacity: 0.05;
+        text-align: center;
+        text-transform: uppercase;
+        top: 0;
+        white-space: nowrap;
+        .position-sticky();
+
+        .responsive-max(@break-md, {
+            margin-bottom: 30px;
+            position: relative;
+            text-align: left;
+        });
+    }
+};

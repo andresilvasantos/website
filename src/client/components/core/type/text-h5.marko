@@ -1,0 +1,19 @@
+<h5.text-h5 class=input.class>
+    <include(data.renderBody)/>
+</h5>
+
+style.less {
+    .text-h5 {
+        font-family: @font;
+        font-size: 25px;
+        font-weight: 500;
+
+        .responsive-max(@break-md, {
+            font-size: 20px;
+        });
+
+        .responsive-max(@break-sm, {
+            font-size: 15px;
+        });
+    }
+}

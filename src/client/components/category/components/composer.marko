@@ -1,0 +1,114 @@
+import axios from 'axios'
+import { calculateSidebarButtonMode } from "src/client/utils"
+import copy from 'src/client/copy.json'
+
+class {
+    onCreate(input, out) {
+        this.state = {
+            category: input.category,
+            csrf: out.global.csrfToken,
+            globalSettings: out.global.globalSettings
+        }
+    }
+
+    onMount() {
+        const sectionKeys = ['header', 'grid']
+        const sectionElements = []
+
+        sectionKeys.map(key => {
+            sectionElements.push(this.getComponent(key).getEl())
+        })
+        calculateSidebarButtonMode(sectionElements)
+    }
+
+    copyFromCategory() {
+        switch(this.state.category) {
+            case 'photography':
+                return copy.categories.photography
+            case 'electronicmusic':
+                return copy.categories.electronicMusic
+            case 'movies':
+                return copy.categories.movies
+            case 'shortfilms':
+                return copy.categories.shortFilms
+            case 'codeprojects':
+                return copy.categories.codeProjects
+            case 'tvshows':
+                return copy.categories.tvShows
+            case 'videogames':
+                return copy.categories.videoGames
+            case 'music':
+                return copy.categories.music
+            default:
+                return {
+                    intro: 'Missing',
+                    title: 'Missing',
+                    watermark: 'Missing'
+                }
+        }
+    }
+
+    updateBackgroundImage(mediaId) {
+        const category = this.state.category
+
+        const globalSettings = this.state.globalSettings
+        const backgrounds = globalSettings ? globalSettings.backgrounds : {}
+        const oldBackground = backgrounds ? backgrounds[category] : null
+
+        let content = { backgrounds: backgrounds }
+        content.backgrounds[category] = mediaId
+
+        const that = this
+        axios.post('/settings', {
+            content: content,
+            removeImageId: oldBackground,
+            _csrf: this.state.csrf
+        })
+        .then(function (response) {
+            if(!response.data.code) {
+                that.state.globalSettings = response.data.content
+            }
+            else {
+                console.log(response.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+}
+
+$ const backgrounds = state.globalSettings ? state.globalSettings.backgrounds : {}
+$ const backgroundImage = backgrounds ? backgrounds[state.category] : ''
+
+<div>
+    <section-header-default.header
+        copy=component.copyFromCategory()
+        imageUrl=(
+            backgroundImage ?
+            `/static/uploads/${backgroundImage}_x1.jpg` :
+            ''
+        )
+        key='header'
+        on-updateBackgroundImage('updateBackgroundImage')
+    />
+    <section-grid key="grid" category=state.category content=input.content />
+</div>
+
+style.less {
+    .header {
+        height: 100vh;
+        top: 0;
+        width: 100%;
+        .position-sticky();
+
+        .responsive-max(@break-md, {
+            position: relative;
+        });
+    }
+
+    .section-grid {
+        position: relative;
+        width: 100%;
+    }
+};
