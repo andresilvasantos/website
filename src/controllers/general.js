@@ -8,41 +8,66 @@ const utils = require('./utils')
 module.exports = function(router, app, express, upload) {
 
     /**
-	 * Global settings.
+	 * Update category.
 	 */
 
-    router.route('/settings')
+    router.route('/settings/category')
     .post(utils.authRequired, function(req, res) {
-        const removeId = req.body.removeImageId
+        const category = req.body.category
+        const content = req.body.content
+        const contentName = req.body.contentName
 
-        models.GlobalSettings.findOneAndUpdate(
-            {},
-            {$set: req.body.content},
-            {
-                upsert: true,
-                new: true
-            },
-            function(error, generalSettings) {
-                if(error) {
-                    res.json({code: 1, description: error})
-                }
-                else {
-                    if(removeId) {
-                        const thumbsPerImage = 2
-                		for(let i = 0; i < thumbsPerImage; ++i) {
-                			fs.unlink("./static/uploads/" +
-                                removeId + "_x" + String(i + 1) + ".jpg",
-                                function(error) {
-                                    if(error) console.log(error)
-                                }
-                            )
-                		}
+        models.GlobalSettings.findOne({}, function(error, globalSettings) {
+            if(!globalSettings) {
+                let doc = {}
+                doc[category + '.' + contentName] = content
+
+                models.GlobalSettings.create(doc, function(error, globalSettings) {
+                    if(error || !globalSettings) {
+                        res.json({code: 1, description: error})
                     }
-
-                    res.json({code: 0, content: generalSettings})
-                }
+                    else {
+                        res.json({code: 0, content: globalSettings})
+                    }
+                })
             }
-        )
+            else {
+                let oldMedia
+
+                if(contentName == 'background') {
+                    oldMedia = globalSettings[category].background
+                }
+
+                let update = { $set : {} }
+                update.$set[category + '.' + contentName] = content
+
+                models.GlobalSettings.findOneAndUpdate(
+                    {},
+                    update,
+                    { new: true },
+                    function(error, globalSettings) {
+                        if(error || !globalSettings) {
+                            res.json({code: 1, description: error})
+                        }
+                        else {
+                            if(oldMedia) {
+                                const thumbsPerImage = 3
+                        		for(let i = 0; i < thumbsPerImage; ++i) {
+                        			fs.unlink("./static/uploads/" +
+                                        oldMedia + "_x" + String(i + 1) + ".jpg",
+                                        function(error) {
+                                            if(error) console.log(error)
+                                        }
+                                    )
+                        		}
+                            }
+
+                            res.json({code: 0, content: globalSettings})
+                        }
+                    }
+                )
+            }
+        })
     })
 
     /**

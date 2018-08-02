@@ -1,15 +1,37 @@
 const mongoose = require('mongoose')
 
 const globalSettingsSchema = mongoose.Schema({
-    backgrounds: {
-        codeprojects: { type: String, required: true, trim: true },
-        electronicmusic: { type: String, required: true, trim: true },
-        movies: { type: String, required: true, trim: true },
-        music: { type: String, required: true, trim: true },
-        photography: { type: String, required: true, trim: true },
-        shortfilms: { type: String, required: true, trim: true },
-        tvshows: { type: String, required: true, trim: true },
-        videogames: { type: String, required: true, trim: true }
+    codeprojects: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    electronicmusic: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    movies: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    music: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    photography: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    shortfilms: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    tvshows: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
+    },
+    videogames: {
+        background: { type: String, trim: true },
+        description: { type: String, trim: true }
     }
 },
 {

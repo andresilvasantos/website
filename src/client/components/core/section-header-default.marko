@@ -6,7 +6,8 @@ class {
     onCreate(input, out) {
         this.state = {
             admin: out.global.loggedUser,
-            changeBackgroundEnabled: false
+            changeBackgroundEnabled: false,
+            changeDescriptionEnabled: false
         }
     }
 
@@ -57,13 +58,22 @@ class {
         this.state.changeBackgroundEnabled = true
     }
 
+    changeDescriptionRequested() {
+        this.state.changeDescriptionEnabled = true
+    }
+
     updateBackgroundImage() {
         const media = this.getComponent('mediaDrop').media()
         if(!media.length) return
 
         const mediaId = media[0].upload.uuid
 
-        this.emit('updateBackgroundImage', mediaId)
+        this.emit('updateContent', mediaId, 'background')
+    }
+
+    updateDescription() {
+        const descriptionElement = this.getComponent('description').getEl()
+        this.emit('updateContent', descriptionElement.value, 'description')
     }
 }
 
@@ -78,13 +88,13 @@ class {
         <div.wrapper-change-background>
             <if(state.changeBackgroundEnabled)>
                 <media-drop key='mediaDrop' maxMediaCount=1 />
-                <button-text.button-change-background
+                <button-text
                     text=adminCopy.add.submitContent
                     on-click('updateBackgroundImage')
                 />
             </if>
             <else>
-                <button-text.button-change-background
+                <button-text
                     text=adminCopy.changeBackgroundImage
                     on-click('changeBackgroundRequested')
                 />
@@ -93,18 +103,39 @@ class {
     </if>
 
     <div.wrapper-content key='wrapper'>
-        <div.test>
+        <div.content>
             <text-h2.watermark>
                 ${input.copy.watermark}
             </text-h2>
             <text-h1.title key="title">
                 ${input.copy.title}
             </text-h1>
-            <text-p.intro>
-                $!{input.copy.intro}
-            </text-p>
+            <if(state.admin && state.changeDescriptionEnabled)>
+                <text-area.description
+                    key='description'
+                    value=input.description
+                />
+            </if>
+            <else>
+                <text-p.description>
+                    $!{input.description}
+                </text-p>
+            </else>
         </div>
     </div>
+
+    <if(state.admin && state.changeDescriptionEnabled)>
+        <button-text.button-edit-description
+            text=adminCopy.submitHeaderDescription
+            on-click('updateDescription')
+        />
+    </if>
+    <else-if(state.admin)>
+        <button-text.button-edit-description
+            text=adminCopy.editHeaderDescription
+            on-click('changeDescriptionRequested')
+        />
+    </else-if>
 
     <blind />
 </div>
@@ -149,7 +180,7 @@ style.less {
                 text-align: left;
             });
 
-            .test {
+            .content {
                 position: relative;
 
                 .watermark {
@@ -185,7 +216,7 @@ style.less {
                     });
                 }
 
-                .intro {
+                .description {
                     color: @color-codgray;
                     left: 50%;
                     opacity: 0.6;
@@ -206,6 +237,13 @@ style.less {
                     });
                 }
             }
+        }
+
+        .button-edit-description {
+            bottom: 20px;
+            left: 50%;
+            position: absolute;
+            transform: translateX(-50%);
         }
     }
 };

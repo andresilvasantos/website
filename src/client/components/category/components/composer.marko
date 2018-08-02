@@ -7,7 +7,9 @@ class {
         this.state = {
             category: input.category,
             csrf: out.global.csrfToken,
-            globalSettings: out.global.globalSettings
+            settings: out.global.globalSettings ?
+                out.global.globalSettings[input.category] :
+                {}
         }
     }
 
@@ -48,25 +50,20 @@ class {
         }
     }
 
-    updateBackgroundImage(mediaId) {
+    updateContent(content, contentName) {
         const category = this.state.category
-
-        const globalSettings = this.state.globalSettings
-        const backgrounds = globalSettings ? globalSettings.backgrounds : {}
-        const oldBackground = backgrounds ? backgrounds[category] : null
-
-        let content = { backgrounds: backgrounds }
-        content.backgrounds[category] = mediaId
-
         const that = this
-        axios.post('/settings', {
+
+        axios.post('/settings/category', {
+            category: category,
             content: content,
-            removeImageId: oldBackground,
+            contentName: contentName,
             _csrf: this.state.csrf
         })
         .then(function (response) {
             if(!response.data.code) {
-                that.state.globalSettings = response.data.content
+                that.state.settings = response.data.content[category]
+                that.setStateDirty('settings')
             }
             else {
                 console.log(response.data)
@@ -78,19 +75,20 @@ class {
     }
 }
 
-$ const backgrounds = state.globalSettings ? state.globalSettings.backgrounds : {}
-$ const backgroundImage = backgrounds ? backgrounds[state.category] : ''
+$ const backgroundImage = state.settings ? state.settings.background : ''
+$ const description = state.settings ? state.settings.description : ''
 
 <div>
     <section-header-default.header
         copy=component.copyFromCategory()
+        description=description
         imageUrl=(
             backgroundImage ?
             `/static/uploads/${backgroundImage}_x1.jpg` :
             ''
         )
         key='header'
-        on-updateBackgroundImage('updateBackgroundImage')
+        on-updateContent('updateContent')
     />
     <section-grid key="grid" category=state.category content=input.content />
 </div>

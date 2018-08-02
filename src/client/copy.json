@@ -49,53 +49,47 @@
             "submitContent": "Submit"
         },
         "changeBackgroundImage": "Change background image",
+        "editHeaderDescription": "Edit description",
         "login": {
             "button": "Login",
             "placeholderPassword": "Password",
             "placeholderUsername": "Username",
             "title": "Admin"
         },
-        "logout": "Logout"
+        "logout": "Logout",
+        "submitHeaderDescription": "Submit"
     },
     "categories": {
         "codeProjects": {
-            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
             "title": "Code Projects",
             "watermark": "I do",
             "projectPage": "Project Page"
         },
         "electronicMusic": {
-            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
             "title": "Electronic Music",
             "watermark": "I do"
         },
         "movies": {
-            "intro": "Had strictly mrs handsome mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
             "title": "Movies",
             "watermark": "I like"
         },
         "music": {
-            "intro": "Bla bla bla.",
             "title": "Music",
             "watermark": "I like"
         },
         "photography": {
-            "intro": "Had strictly <b>mrs handsome</b> mistaken cheerful. We it so if resolution invitation remarkably unpleasant conviction. As into ye then form. To easy five less if rose were. Now set offended own out required entirely. Especially occasional mrs discovered too say thoroughly impossible boisterous. My head when real no he high rich at with. After so power of young as. Bore year does has get long fat cold saw neat. Put boy carried chiefly shy general.",
             "title": "Photography",
             "watermark": "I do"
         },
         "shortFilms": {
-            "intro": "Since I was a kid I have this dream of becoming a film director.<br>This are just very short films that I do without any budget to exercise my skills.",
             "title": "Short Films",
             "watermark": "I do"
         },
         "tvShows": {
-            "intro": "Bla bla bla.",
             "title": "TV Shows",
             "watermark": "I like"
         },
         "videoGames": {
-            "intro": "Bla bla bla.",
             "title": "Video Games",
             "watermark": "I like"
         }
