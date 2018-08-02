@@ -44,6 +44,7 @@ class {
 }
 
 $ const thumbnail = `/static/uploads/${state.content.thumbnail}_x1.jpg`
+$ const smallThumbnail = `/static/uploads/${state.content.thumbnail}_x3.jpg`
 
 <div>
     <div.section.header key='header'
@@ -61,12 +62,12 @@ $ const thumbnail = `/static/uploads/${state.content.thumbnail}_x1.jpg`
             <if(state.content.youtubeId)>
                 <frame-youtube
                     videoId=state.content.youtubeId
-                    videoThumbnail=thumbnail
+                    videoThumbnailId=state.content.thumbnail
                 />
             </if>
             <else>
                 <div.frame>
-                    <image src=thumbnail />
+                    <image src=thumbnail smallSrc=smallThumbnail/>
                 </div>
             </else>
         </div>

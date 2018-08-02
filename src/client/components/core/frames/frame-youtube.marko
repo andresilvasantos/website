@@ -11,6 +11,18 @@ class {
     }
 }
 
+$ const thumbnailId = input.videoThumbnailId
+$ const thumbnail = (
+    thumbnailId ?
+    `/static/uploads/${thumbnailId}_x1.jpg` :
+    `http://img.youtube.com/vi/${input.videoId}/hqdefault.jpg`
+)
+$ const smallThumbnail = (
+    thumbnailId ?
+    `/static/uploads/${thumbnailId}_x3.jpg` :
+    `http://img.youtube.com/vi/${input.videoId}/default.jpg`
+)
+
 <div.frame-youtube class=input.class>
     <div.placeholder />
 
@@ -25,8 +37,8 @@ class {
     <else>
         <button-default.button-frame on-click('revealFrame')>
             <image
-                src=(input.videoThumbnail ||
-                `http://img.youtube.com/vi/${input.videoId}/hqdefault.jpg`)
+                smallSrc=smallThumbnail
+                src=thumbnail
             />
             <if(input.videoTitle)>
                 <div.gradient-overlay />
@@ -59,7 +71,7 @@ style.less {
         width: 100%;
 
         .placeholder {
-            background-color: @color-gallery;
+            background-color: fade(@color-gallery, 10);
             .absolute-fill();
             .square(100%);
         }
