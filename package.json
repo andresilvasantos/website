@@ -6,8 +6,7 @@
   "scripts": {
     "build": "mkdir -p static && browserify -g markoify --extension='.marko' routes/index/client.js -o static/bundle.js",
     "build-prod": "mkdir -p static && NODE_ENV=production browserify -g markoify --extension='.marko' routes/index/client.js -o static/bundle.js",
-    "start": "npm run build && node server.js",
-    "watcher": "./node_modules/.bin/browser-refresh website.js",
+    "start": "./node_modules/.bin/browser-refresh website.js",
     "styleless": "./node_modules/.bin/stylelint **/*.marko --syntax less"
   },
   "repository": {
