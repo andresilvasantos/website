@@ -14,7 +14,7 @@ class {
 
     mousedown(event) {
         if(event.button == 1) {
-            this.emit('open')
+            this.emit('open', event)
         }
     }
 }

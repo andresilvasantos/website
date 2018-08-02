@@ -159,6 +159,8 @@ class {
         this.removeEventListeners()
 
         this.getEl('slider').style.display = 'none'
+
+        window.onkeyup = null
     }
 
     show() {
@@ -173,6 +175,24 @@ class {
         // Hack to force class change.
         this.gallery.offsetHeight;
         this.gallery.classList.remove('no-transition')
+
+        window.onkeyup = (event) => {
+            const key = event.keyCode ? event.keyCode : event.which
+
+            switch(key) {
+                case 27:
+                    this.hide()
+                    break
+                case 37:
+                    this.leftRequested()
+                    break
+                case 39:
+                    this.rightRequested()
+                    break
+                default:
+                    break
+            }
+        }
     }
 
     leftRequested(event) {
