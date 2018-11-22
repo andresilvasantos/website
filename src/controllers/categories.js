@@ -10,7 +10,10 @@ module.exports = function(router, app, express, upload) {
 	router.route('/shortfilms')
 	.get(function(req, res) {
 		models.ShortFilm.find({}, function (error, shortFilms) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Short Films'
 			this.render('../client/components/category', {
@@ -57,7 +60,10 @@ module.exports = function(router, app, express, upload) {
 	.get(function(req, res) {
 		models.ShortFilm.findOne({ id: req.params.id },
 			function (error, shortFilm) {
-				if(error) utils.handleError(res, error)
+				if(error) {
+					res.redirect('/error')
+					return
+				}
 
 				const shortFilmJson = shortFilm.toJSON()
 
@@ -78,7 +84,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/photography')
 	.get(function(req, res) {
 		models.Photograph.find({}, function (error, photographies) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Photography'
 			this.render('../client/components/category',
@@ -127,7 +136,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/electronicmusic')
 	.get(function(req, res) {
 		models.ElectronicMusic.find({}, function (error, electronicMusic) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Electronic Music'
 			this.render('../client/components/category', {
@@ -167,7 +179,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/codeprojects')
 	.get(function(req, res) {
 		models.CodeProject.find({}, function (error, codeProjects) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Code Projects'
 			this.render('../client/components/category', {
@@ -217,7 +232,10 @@ module.exports = function(router, app, express, upload) {
 	.get(function(req, res) {
 		models.CodeProject.findOne({ id: req.params.id },
 			function (error, codeProject) {
-				if(error) utils.handleError(res, error)
+				if(error) {
+					res.redirect('/error')
+					return
+				}
 
 				const codeProjectJson = codeProject.toJSON()
 
@@ -238,7 +256,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/movies')
 	.get(function(req, res) {
 		models.Movie.find({}, function (error, movies) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Movies'
 			this.render('../client/components/category', {
@@ -275,7 +296,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/tvshows')
 	.get(function(req, res) {
 		models.TvShow.find({}, function (error, tvShows) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'TV Shows'
 			this.render('../client/components/category', {
@@ -312,7 +336,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/music')
 	.get(function(req, res) {
 		models.Music.find({}, function (error, music) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Music'
 			this.render('../client/components/category', {
@@ -349,7 +376,10 @@ module.exports = function(router, app, express, upload) {
     router.route('/videogames')
 	.get(function(req, res) {
 		models.VideoGame.find({}, function (error, videoGames) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.pageTitle = 'Video Games'
 			this.render('../client/components/category', {

@@ -51,7 +51,10 @@ module.exports = function(router, app, express) {
 		    function(callback) {
 				models.ShortFilm.find()
 				.random(3, true, function(error, shortFilms) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
 
 					let content = {}
 					content.shortFilms = shortFilms
@@ -62,7 +65,11 @@ module.exports = function(router, app, express) {
 				models.Photograph.count()
 				models.Photograph.find()
 				.random(8, true, function(error, photographs) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.photographs = photographs
 					callback(null, content);
 				})
@@ -70,7 +77,11 @@ module.exports = function(router, app, express) {
 			function(content, callback) {
 				models.ElectronicMusic.find()
 				.random(3, true, function(error, electronicMusic) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.electronicMusic = electronicMusic
 					callback(null, content);
 				})
@@ -78,7 +89,11 @@ module.exports = function(router, app, express) {
 			function(content, callback) {
 				models.CodeProject.find()
 				.random(4, true, function(error, codeProjects) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.codeProjects = codeProjects
 					callback(null, content);
 				})
@@ -86,7 +101,11 @@ module.exports = function(router, app, express) {
 		    function(content, callback) {
 				models.Movie.find()
 				.random(8, true, function(error, movies) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.movies = movies
 					callback(null, content);
 				})
@@ -94,7 +113,11 @@ module.exports = function(router, app, express) {
 			function(content, callback) {
 				models.TvShow.find()
 				.random(6, true, function(error, tvShows) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.tvShows = tvShows
 					callback(null, content);
 				})
@@ -102,7 +125,11 @@ module.exports = function(router, app, express) {
 			function(content, callback) {
 				models.Music.find()
 				.random(8, true, function(error, music) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.music = music
 					callback(null, content);
 				})
@@ -110,13 +137,21 @@ module.exports = function(router, app, express) {
 			function(content, callback) {
 				models.VideoGame.find()
 				.random(4, true, function(error, videoGames) {
-					if(error) utils.handleError(res, error)
+                    if(error) {
+        				res.redirect('/error')
+        				return
+        			}
+
 					content.videoGames = videoGames
 					callback(null, content);
 				})
 		    }
 		], function (error, content) {
-			if(error) utils.handleError(res, error)
+            if(error) {
+				res.redirect('/error')
+				return
+			}
+            
 		    this.render("../client/components/home", {content: content})
 		});
 	})

@@ -32,7 +32,10 @@ module.exports = function(app, express, passport, upload) {
 	// Fetch global settings and add it to global out
 	router.use(function (req, res, next) {
 		models.GlobalSettings.findOne({}, function (error, globalSettings) {
-			if(error) utils.handleError(res, error)
+			if(error) {
+				res.redirect('/error')
+				return
+			}
 
 			this.global.globalSettings = globalSettings
 			next()

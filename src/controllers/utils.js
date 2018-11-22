@@ -6,12 +6,6 @@ module.exports = {
 		if(req.xhr || req.headers.accept.indexOf('json') > -1) res.send({redirect: '/admin'})
 		else res.redirect('/admin')
 	},
-	handleError: function(res, error) {
-		if(error) {
-			res.redirect('/error')
-			throw new Error(error)
-		}
-	},
 	removeThumbnails: function(imageId) {
 		const thumbsPerImage = 3
 		for(let i = 0; i < thumbsPerImage; ++i) {

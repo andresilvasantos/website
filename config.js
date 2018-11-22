@@ -1,11 +1,11 @@
 module.exports = {
-	cookieSecret: "COOKIE_PASSWORD",
+	cookieSecret: "keythatkeepsessionssafe",
 	db: {
 		host: "localhost",
-		name: "DB_NAME",
-		password: "DB_ADMIN_PASSWORD",
+		name: "andreweb",
+		password: "passwordthatkeepussafe",
 		port: 27017,
-		username: "DB_ADMIN_USER"
+		username: "andre"
 	},
 	production: false,
 	server: {
@@ -13,8 +13,8 @@ module.exports = {
 		port: 3000
 	},
 	user: {
-		email: 'USER_EMAIL',
-		username: 'USER_USERNAME',
-		password: 'USER_PASSWORD'
+		email: 'andreferreirasilvasantos@gmail.com',
+		username: 'eindouble',
+		password: '10qpalzm'
 	}
 }

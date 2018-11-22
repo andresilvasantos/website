@@ -1,6 +1,6 @@
 class {
     onMount() {
-        this.blindElement = this.getEl("root")
+        this.blindElement = this.getEl()
 
         const debounce = (cb) => () => window.requestAnimationFrame(cb);
         const handleScroll = debounce(() => {
@@ -21,7 +21,7 @@ class {
     }
 }
 
-<div.blind key="root" class=([input.class, input.darkMode ? 'dark' : ''])/>
+<div.blind class=([input.class, input.darkMode ? 'dark' : '']) />
 
 style.less {
     .blind {
