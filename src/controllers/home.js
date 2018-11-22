@@ -45,9 +45,10 @@ mongoose.Query.prototype.random = function(count, unique, callback) {
 }
 
 module.exports = function(router, app, express) {
-	router.route("/")
+	router.route('/')
 	.get(function(req, res) {
-		async.waterfall([
+        this.render('../client/components/maintenance', {})
+		/*async.waterfall([
 		    function(callback) {
 				models.ShortFilm.find()
 				.random(3, true, function(error, shortFilms) {
@@ -151,8 +152,8 @@ module.exports = function(router, app, express) {
 				res.redirect('/error')
 				return
 			}
-            
+
 		    this.render("../client/components/home", {content: content})
-		});
+		});*/
 	})
 }

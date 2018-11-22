@@ -43,9 +43,15 @@ module.exports = function(app, express, passport, upload) {
 	})
 
 	require('./home')(router, app, express)
-	require('./categories')(router, app, express, upload)
+	/*require('./categories')(router, app, express, upload)
 	require('./admin')(router, app, express, passport)
-	require('./general')(router, app, express, upload)
+	require('./general')(router, app, express, upload)*/
+
+	router.route("/void")
+	.get(function(req, res) {
+	   this.global.pageTitle = 'Void'
+	   this.render("../client/components/void", {})
+	})
 
 	/**
 	 * //404 Route (ALWAYS Keep this as the last route)
